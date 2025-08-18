@@ -1,0 +1,125 @@
+{
+    "intro": "Pointers are just addresses to memory locations!",
+    "sections": [
+        {
+            "code_string": "#include <stdio.h>\n\nint main() {\n    // Create a simple variable\n    int age = 25;\n    return 0;\n}",
+            "annotation": "Creating our first variable in memory",
+            "highlight_lines": [
+                5
+            ],
+            "explanation": "Variable stores value 25 at memory address"
+        },
+        {
+            "code_string": "int age = 25;\nprintf(\"Value: %d\\n\", age);\nprintf(\"Address: %p\\n\", &age);",
+            "annotation": "Viewing value and memory address",
+            "highlight_lines": [
+                3
+            ],
+            "explanation": "& operator gets the address where value lives"
+        },
+        {
+            "code_string": "int age = 25;\n// Pointer stores address, not value\nint* age_pointer = &age;\nprintf(\"Pointer: %p\\n\", age_pointer);",
+            "annotation": "Creating pointer to store the address",
+            "highlight_lines": [
+                3
+            ],
+            "explanation": "Pointer variable holds memory address of age"
+        },
+        {
+            "code_string": "int* age_pointer = &age;\n// * dereferences (follows the address)\nprintf(\"Value at pointer: %d\\n\", *age_pointer);",
+            "annotation": "Using pointer to access original value",
+            "highlight_lines": [
+                3
+            ],
+            "explanation": "* operator follows address to get stored value"
+        },
+        {
+            "code_string": "int age = 25;\nint* ptr = &age;\n// Change value through pointer\n*ptr = 30;\nprintf(\"age is now: %d\\n\", age);",
+            "annotation": "Modifying variable through its pointer",
+            "highlight_lines": [
+                4
+            ],
+            "explanation": "Changing value via pointer affects original variable"
+        },
+        {
+            "code_string": "void increment(int* num) {\n    (*num)++; // Modify original value\n}\n\nint value = 5;\nincrement(&value);",
+            "annotation": "Function modifies variable using pointer parameter",
+            "highlight_lines": [
+                2,
+                6
+            ],
+            "explanation": "Functions can modify variables by receiving addresses"
+        },
+        {
+            "code_string": "int arr[3] = {10, 20, 30};\nint* ptr = arr; // Arrays are pointers!\nprintf(\"First: %d\\n\", *ptr);\nprintf(\"Second: %d\\n\", *(ptr + 1));",
+            "annotation": "Arrays are actually pointers in disguise",
+            "highlight_lines": [
+                2,
+                4
+            ],
+            "explanation": "Array name is pointer to first element"
+        },
+        {
+            "code_string": "int* ptr = arr;\nptr++; // Move to next element\nprintf(\"Now points to: %d\\n\", *ptr);",
+            "annotation": "Moving pointer to next memory location",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Pointer arithmetic moves through memory addresses"
+        },
+        {
+            "code_string": "int a = 10, b = 20;\nint* ptr;\nptr = &a; // Points to a\nptr = &b; // Now points to b",
+            "annotation": "Reassigning pointer to different variables",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "Pointers can be reassigned to different addresses"
+        },
+        {
+            "code_string": "int* ptr1 = &age;\nint* ptr2 = ptr1; // Copy the address\n// Both point to same location",
+            "annotation": "Multiple pointers to same memory location",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Multiple pointers can share same memory address"
+        },
+        {
+            "code_string": "int* ptr = NULL; // Safe initialization\nif (ptr != NULL) {\n    printf(\"Safe to use: %d\\n\", *ptr);\n}",
+            "annotation": "Always initialize pointers to avoid crashes",
+            "highlight_lines": [
+                1,
+                2
+            ],
+            "explanation": "NULL pointers prevent accidental memory access"
+        },
+        {
+            "code_string": "// Memory layout visualization\n// [Address 1000] -> [Value: 25]  <- variable\n// [Address 2000] -> [1000]       <- pointer\n// Pointer stores address, not value!",
+            "annotation": "Mental model of pointer memory layout",
+            "highlight_lines": [
+                2,
+                3
+            ],
+            "explanation": "Pointers store addresses like street directions"
+        },
+        {
+            "code_string": "void swap(int* x, int* y) {\n    int temp = *x;\n    *x = *y;\n    *y = temp;\n}",
+            "annotation": "Swapping values using pointer parameters",
+            "highlight_lines": [
+                2,
+                3,
+                4
+            ],
+            "explanation": "Pointers enable functions to swap original values"
+        },
+        {
+            "code_string": "// Common mistakes to avoid:\n// int* ptr; *ptr = 5;  <- CRASH!\n// Always initialize pointers first\nint* ptr = &variable; // SAFE",
+            "annotation": "Avoiding common pointer pitfalls",
+            "highlight_lines": [
+                4
+            ],
+            "explanation": "Uninitialized pointers cause program crashes"
+        }
+    ],
+    "outro": "Pointers are just memory addresses - now you know!"
+}

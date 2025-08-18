@@ -1,0 +1,54 @@
+{
+    "intro": "Learn to properly evaluate your models!",
+    "outro": "Great! You can now thoroughly evaluate models!",
+    "sections": [
+        {
+            "annotation": "Setting up model and evaluation tools",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\nfrom sklearn.metrics import classification_report, confusion_matrix\nimport numpy as np\n\n# Create and train a sample model\nmodel = keras.Sequential([\n    keras.layers.Dense(64, activation='relu', input_shape=(20,)),\n    keras.layers.Dense(3, activation='softmax')\n])",
+            "explanation": "Import sklearn metrics for detailed evaluation. Create a simple multi-class classification model for demonstration purposes.",
+            "highlight_lines": [
+                3,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "annotation": "Creating training data and training model",
+            "code_string": "# Generate sample data and train\nX_train = np.random.random((1000, 20))\ny_train = keras.utils.to_categorical(np.random.randint(0, 3, 1000), 3)\nX_test = np.random.random((200, 20))\ny_test = keras.utils.to_categorical(np.random.randint(0, 3, 200), 3)\n\nmodel.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])\nmodel.fit(X_train, y_train, epochs=5, verbose=0)",
+            "explanation": "Generate random training and test data. Compile with accuracy metric. Train the model quickly for evaluation demonstration.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5,
+                8
+            ]
+        },
+        {
+            "annotation": "Getting basic metrics and predictions",
+            "code_string": "# Basic model evaluation\ntest_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)\nprint(f\"Test Loss: {test_loss:.4f}\")\nprint(f\"Test Accuracy: {test_accuracy:.4f}\")\n\n# Get predictions for detailed analysis\ny_pred = model.predict(X_test)\ny_pred_classes = np.argmax(y_pred, axis=1)\ny_true_classes = np.argmax(y_test, axis=1)",
+            "explanation": "Evaluate model on test set. Get predictions in both probability and class formats for detailed analysis.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "annotation": "Computing detailed evaluation metrics",
+            "code_string": "# Detailed classification metrics\nprint(\"\\nClassification Report:\")\nprint(classification_report(y_true_classes, y_pred_classes))\n\nprint(\"\\nConfusion Matrix:\")\nprint(confusion_matrix(y_true_classes, y_pred_classes))\n\n# Custom metrics\nprecision = keras.metrics.Precision()\nprecision.update_state(y_test, y_pred)\nprint(f\"\\nPrecision: {precision.result().numpy():.4f}\")",
+            "explanation": "Classification report shows precision, recall, F1-score per class. Confusion matrix shows prediction errors. Custom metrics provide specific insights.",
+            "highlight_lines": [
+                3,
+                6,
+                9,
+                10,
+                11
+            ]
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "intro": "Let's work with real data using MNIST!",
+    "outro": "Amazing! You've trained on real image data!",
+    "sections": [
+        {
+            "annotation": "Loading the MNIST handwritten digits dataset",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\n\n# Load MNIST dataset\n(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()\n\nprint(f\"Training data shape: {x_train.shape}\")\nprint(f\"Training labels shape: {y_train.shape}\")",
+            "explanation": "MNIST contains 60,000 training and 10,000 test images of handwritten digits. Each image is 28x28 pixels grayscale.",
+            "highlight_lines": [
+                5,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Preprocessing and normalizing the image data",
+            "code_string": "# Data preprocessing\nx_train = x_train.astype('float32') / 255.0\nx_test = x_test.astype('float32') / 255.0\n\n# Flatten images for dense layers\nx_train_flat = x_train.reshape(-1, 28*28)\nx_test_flat = x_test.reshape(-1, 28*28)\nprint(f\"Flattened shape: {x_train_flat.shape}\")",
+            "explanation": "Normalize pixel values to 0-1 range for better training. Flatten 2D images into 1D vectors for dense layers.",
+            "highlight_lines": [
+                2,
+                3,
+                6,
+                7
+            ]
+        },
+        {
+            "annotation": "Creating a model for digit classification",
+            "code_string": "# Build classification model\nmodel = keras.Sequential([\n    keras.layers.Dense(128, activation='relu', input_shape=(784,)),\n    keras.layers.Dropout(0.2),\n    keras.layers.Dense(10, activation='softmax')\n])\n\nmodel.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])",
+            "explanation": "128 neurons in hidden layer, dropout prevents overfitting, 10 output neurons for digits 0-9, softmax for probability distribution.",
+            "highlight_lines": [
+                3,
+                4,
+                5,
+                8
+            ]
+        },
+        {
+            "annotation": "Training and evaluating on MNIST data",
+            "code_string": "# Train on real data\nhistory = model.fit(\n    x_train_flat, y_train,\n    epochs=5,\n    validation_data=(x_test_flat, y_test),\n    verbose=1\n)\n\ntest_loss, test_acc = model.evaluate(x_test_flat, y_test)\nprint(f\"Test accuracy: {test_acc:.4f}\")",
+            "explanation": "Train with validation data to monitor performance. Evaluate on test set gives final accuracy on unseen data.",
+            "highlight_lines": [
+                2,
+                5,
+                9,
+                10
+            ]
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "intro": "Building your first neural network with Keras!",
+    "outro": "Excellent! You've built your first neural network!",
+    "sections": [
+        {
+            "annotation": "Creating a sequential neural network model",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\n\n# Create a simple sequential model\nmodel = keras.Sequential([\n    keras.layers.Dense(64, activation='relu', input_shape=(10,)),\n    keras.layers.Dense(32, activation='relu'),\n    keras.layers.Dense(1, activation='sigmoid')\n])",
+            "explanation": "Sequential models stack layers linearly. Dense layers are fully connected. Activation functions introduce non-linearity between layers.",
+            "highlight_lines": [
+                5,
+                6,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Configuring the model for training",
+            "code_string": "# Model compilation\nmodel.compile(\n    optimizer='adam',\n    loss='binary_crossentropy',\n    metrics=['accuracy']\n)\n\nprint(\"Model compiled successfully!\")",
+            "explanation": "Compilation defines optimizer for weight updates, loss function to minimize, and metrics to monitor during training.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "Inspecting model and preparing sample data",
+            "code_string": "# View model architecture\nmodel.summary()\n\n# Generate sample data\nimport numpy as np\nX_train = np.random.random((1000, 10))\ny_train = np.random.randint(0, 2, (1000, 1))",
+            "explanation": "Model summary shows layer structure and parameters. We create random training data with 1000 samples and 10 features each.",
+            "highlight_lines": [
+                2,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Training the neural network",
+            "code_string": "# Train the model\nhistory = model.fit(\n    X_train, y_train,\n    epochs=5,\n    batch_size=32,\n    validation_split=0.2,\n    verbose=1\n)\nprint(\"Training completed!\")",
+            "explanation": "Fit method trains the model. Epochs are complete passes through data. Batch size controls memory usage. Validation split monitors overfitting.",
+            "highlight_lines": [
+                2,
+                4,
+                5,
+                6
+            ]
+        }
+    ]
+}

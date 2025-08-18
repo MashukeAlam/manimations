@@ -1,0 +1,53 @@
+{
+    "intro": "Navigate multiple windows and frames like pro!",
+    "outro": "Fantastic! You can handle complex window scenarios!",
+    "sections": [
+        {
+            "annotation": "Setting up multi-window handling",
+            "code_string": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\n\ndriver = webdriver.Chrome()\ndriver.get(\"https://example.com\")\n\noriginal_window = driver.current_window_handle\nprint(f\"Original window: {original_window}\")",
+            "explanation": "current_window_handle gets window identifier. Store original window reference for navigation. Essential for multi-window workflows.",
+            "highlight_lines": [
+                6,
+                7,
+                9,
+                10
+            ]
+        },
+        {
+            "annotation": "Opening and switching between browser windows",
+            "code_string": "# Open new window and switch\ndriver.execute_script(\"window.open('https://google.com', '_blank');\")\nall_windows = driver.window_handles\n\n# Switch to new window\nfor window in all_windows:\n    if window != original_window:\n        driver.switch_to.window(window)\n        break\nprint(f\"Switched to new window: {driver.title}\")",
+            "explanation": "execute_script opens new browser windows. window_handles lists all windows. switch_to.window changes active window context.",
+            "highlight_lines": [
+                2,
+                3,
+                6,
+                7,
+                8,
+                10
+            ]
+        },
+        {
+            "annotation": "Handling iframe content switching",
+            "code_string": "# Work with iframes\ndriver.switch_to.window(original_window)\ndriver.get(\"https://example.com/iframe-page\")\n\n# Switch to iframe\niframe = driver.find_element(By.TAG_NAME, \"iframe\")\ndriver.switch_to.frame(iframe)\nprint(\"Switched to iframe content\")",
+            "explanation": "switch_to.frame enters iframe context. Find iframe element first. All subsequent operations target iframe content.",
+            "highlight_lines": [
+                2,
+                6,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Returning to main content and cleanup",
+            "code_string": "# Return to main content and cleanup\ndriver.switch_to.default_content()\nprint(\"Back to main page content\")\n\n# Close all windows\nfor window in driver.window_handles:\n    driver.switch_to.window(window)\n    driver.close()\ndriver.quit()",
+            "explanation": "default_content() exits iframe context. Close each window individually. quit() ends entire browser session.",
+            "highlight_lines": [
+                2,
+                6,
+                7,
+                8,
+                9
+            ]
+        }
+    ]
+}

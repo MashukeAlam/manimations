@@ -1,0 +1,42 @@
+{
+  "intro": "Master Go maps for key-value storage and advanced control flow patterns for complex program logic",
+  "sections": [
+    {
+      "code_string": "// Map declaration and initialization\nvar scores map[string]int\nscores = make(map[string]int)\n\n// Short declaration with values\ngrades := map[string]int{\n    \"Alice\":   95,\n    \"Bob\":     87,\n    \"Charlie\": 92,\n}\n\nscores[\"David\"] = 88",
+      "annotation": "Map creation and basic operations",
+      "highlight_lines": [2, 3, 6, 7, 8, 9, 12],
+      "explanation": "Maps store key-value pairs with unique keys. Use make() for empty maps or literal syntax with initial values. Add elements using bracket notation with key assignment."
+    },
+    {
+      "code_string": "// Check if key exists\ngrade, exists := grades[\"Alice\"]\nif exists {\n    fmt.Printf(\"Alice's grade: %d\\n\", grade)\n} else {\n    fmt.Println(\"Alice not found\")\n}\n\n// Delete key\ndelete(grades, \"Bob\")\nfmt.Printf(\"Map length: %d\\n\", len(grades))",
+      "annotation": "Map existence checking and deletion",
+      "highlight_lines": [2, 3, 4, 5, 6, 10, 11],
+      "explanation": "Use comma ok idiom to safely check key existence. The second return value indicates if key was found. Delete removes key-value pairs, and len() returns current size."
+    },
+    {
+      "code_string": "// Iterate over map\nfor name, grade := range grades {\n    fmt.Printf(\"%s: %d\\n\", name, grade)\n}\n\n// Iterate keys only\nfor name := range grades {\n    fmt.Printf(\"Student: %s\\n\", name)\n}\n\n// Iterate values only\nfor _, grade := range grades {\n    fmt.Printf(\"Grade: %d\\n\", grade)\n}",
+      "annotation": "Map iteration patterns",
+      "highlight_lines": [2, 3, 7, 8, 12, 13],
+      "explanation": "Range over maps returns key-value pairs in random order. Use blank identifier to ignore keys or values. Map iteration order is not guaranteed between runs."
+    },
+    {
+      "code_string": "func getGradeLevel(score int) string {\n    switch {\n    case score >= 90:\n        return \"A\"\n    case score >= 80:\n        return \"B\"\n    case score >= 70:\n        return \"C\"\n    case score >= 60:\n        return \"D\"\n    default:\n        return \"F\"\n    }\n}",
+      "annotation": "Switch statements with conditions",
+      "highlight_lines": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "explanation": "Switch without expression evaluates boolean conditions. Cases are evaluated top to bottom until match found. Default case handles unmatched conditions."
+    },
+    {
+      "code_string": "func processGrade(subject string, score int) {\n    switch subject {\n    case \"Math\", \"Science\":\n        fmt.Printf(\"STEM subject %s: %s\\n\", subject, getGradeLevel(score))\n    case \"English\", \"History\":\n        fmt.Printf(\"Liberal arts %s: %s\\n\", subject, getGradeLevel(score))\n        fallthrough\n    case \"Art\":\n        fmt.Printf(\"Creative subject bonus applied\\n\")\n    default:\n        fmt.Printf(\"General subject %s: %s\\n\", subject, getGradeLevel(score))\n    }\n}",
+      "annotation": "Advanced switch features",
+      "highlight_lines": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      "explanation": "Multiple values in single case using comma separation. Fallthrough keyword continues to next case without condition check. Default handles all unmatched cases."
+    },
+    {
+      "code_string": "students := map[string]map[string]int{\n    \"Alice\": {\"Math\": 95, \"English\": 87, \"Science\": 92},\n    \"Bob\":   {\"Math\": 78, \"English\": 85, \"Science\": 80},\n}\n\nfor student, subjects := range students {\n    fmt.Printf(\"\\n%s's grades:\\n\", student)\n    total := 0\n    count := 0\n    \n    for subject, grade := range subjects {\n        fmt.Printf(\"  %s: %d (%s)\\n\", subject, grade, getGradeLevel(grade))\n        total += grade\n        count++\n    }\n    \n    average := float64(total) / float64(count)\n    fmt.Printf(\"  Average: %.1f (%s)\\n\", average, getGradeLevel(int(average)))\n}",
+      "annotation": "Nested maps and complex iteration",
+      "highlight_lines": [1, 2, 3, 6, 7, 11, 12, 17, 18],
+      "explanation": "Maps can contain other maps for hierarchical data. Nested range loops process multi-level structures. Calculate aggregated values during iteration for reporting and analysis."
+    }
+  ],
+  "outro": "You've mastered Go maps and control flow for handling complex data structures and program logic!"
+}

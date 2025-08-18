@@ -1,0 +1,51 @@
+{
+    "intro": "Leverage powerful pre-trained models with transfer learning!",
+    "outro": "Amazing! You've mastered transfer learning techniques!",
+    "sections": [
+        {
+            "annotation": "Loading a pre-trained MobileNetV2 model",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\n\n# Load pre-trained MobileNetV2 model\nbase_model = keras.applications.MobileNetV2(\n    input_shape=(224, 224, 3),\n    include_top=False,\n    weights='imagenet'\n)\nprint(f\"Base model loaded with {len(base_model.layers)} layers\")",
+            "explanation": "MobileNetV2 is pre-trained on ImageNet. include_top=False removes classification head. We'll add our own custom classifier.",
+            "highlight_lines": [
+                5,
+                6,
+                7,
+                8,
+                10
+            ]
+        },
+        {
+            "annotation": "Freezing pre-trained layers and adding classifier",
+            "code_string": "# Freeze base model weights\nbase_model.trainable = False\n\n# Add custom classification head\nmodel = keras.Sequential([\n    base_model,\n    keras.layers.GlobalAveragePooling2D(),\n    keras.layers.Dense(128, activation='relu'),\n    keras.layers.Dense(3, activation='softmax')\n])",
+            "explanation": "Freeze base model to keep learned features. GlobalAveragePooling reduces dimensions. Add dense layers for new classification task.",
+            "highlight_lines": [
+                2,
+                6,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "annotation": "Compiling model with lower learning rate",
+            "code_string": "# Compile for transfer learning\nmodel.compile(\n    optimizer=keras.optimizers.Adam(0.0001),\n    loss='categorical_crossentropy',\n    metrics=['accuracy']\n)\n\nprint(\"Transfer learning model ready\")\nmodel.summary()",
+            "explanation": "Use lower learning rate for transfer learning. Pre-trained features are good, so small adjustments work best.",
+            "highlight_lines": [
+                2,
+                3,
+                9
+            ]
+        },
+        {
+            "annotation": "Training the transfer learning model",
+            "code_string": "# Create dummy data for demonstration\nimport numpy as np\nX_dummy = np.random.random((100, 224, 224, 3))\ny_dummy = keras.utils.to_categorical(np.random.randint(0, 3, 100), 3)\n\n# Train with transfer learning\nhistory = model.fit(X_dummy, y_dummy, epochs=2, validation_split=0.2)\nprint(\"Transfer learning training completed!\")",
+            "explanation": "Create sample data matching input requirements. Transfer learning trains much faster than training from scratch.",
+            "highlight_lines": [
+                3,
+                4,
+                7,
+                8
+            ]
+        }
+    ]
+}

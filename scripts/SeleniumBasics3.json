@@ -1,0 +1,48 @@
+{
+    "intro": "Handle dynamic content with smart waits!",
+    "outro": "Perfect! You can now handle any dynamic content!",
+    "sections": [
+        {
+            "annotation": "Setting up WebDriver with wait utilities",
+            "code_string": "from selenium import webdriver\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\nfrom selenium.webdriver.common.by import By\nimport time\n\ndriver = webdriver.Chrome()\ndriver.get(\"https://example.com\")",
+            "explanation": "WebDriverWait handles dynamic content loading. expected_conditions provides common wait scenarios. Import time for demonstrations.",
+            "highlight_lines": [
+                2,
+                3,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Using explicit waits for element interactions",
+            "code_string": "# Explicit waits for specific conditions\nwait = WebDriverWait(driver, 10)\n\n# Wait for element to be clickable\nbutton = wait.until(EC.element_to_be_clickable((By.ID, \"dynamic-button\")))\nbutton.click()\n\nprint(\"Button clicked after waiting!\")",
+            "explanation": "Explicit waits pause until conditions met. element_to_be_clickable ensures safe interaction. Timeout prevents infinite waiting.",
+            "highlight_lines": [
+                2,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Waiting for text and visibility changes",
+            "code_string": "# Wait for text and visibility changes\nwait.until(EC.text_to_be_present_in_element((By.ID, \"status\"), \"Complete\"))\nwait.until(EC.visibility_of_element_located((By.CLASS_NAME, \"result\")))\n\nresult = driver.find_element(By.CLASS_NAME, \"result\")\nprint(f\"Dynamic content loaded: {result.text}\")",
+            "explanation": "text_to_be_present waits for specific text. visibility_of_element_located ensures element appears. Combines multiple wait conditions.",
+            "highlight_lines": [
+                2,
+                3,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Implicit waits and handling loading states",
+            "code_string": "# Implicit wait as fallback\ndriver.implicitly_wait(5)\n\n# Handle loading states\ntry:\n    loading = driver.find_element(By.ID, \"loading\")\n    wait.until(EC.invisibility_of_element(loading))\nexcept:\n    print(\"No loading indicator found\")\ndriver.quit()",
+            "explanation": "implicitly_wait sets global timeout for elements. invisibility_of_element waits for disappearance. Try-except handles optional elements.",
+            "highlight_lines": [
+                2,
+                6,
+                7
+            ]
+        }
+    ]
+}

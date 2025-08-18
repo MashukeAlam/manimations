@@ -1,0 +1,132 @@
+{
+    "intro": "Closures are functions that remember their environment!",
+    "sections": [
+        {
+            "code_string": "function outerFunction(x) {\n    let outerVariable = x;\n    console.log('Outer function running');\n    return 42;\n}",
+            "annotation": "Simple function with local variable",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Function creates local variable in scope"
+        },
+        {
+            "code_string": "function outerFunction(x) {\n    let outerVariable = x;\n    // Return inner function\n    return function() {\n        return outerVariable;\n    };\n}",
+            "annotation": "Returning function that uses outer variable",
+            "highlight_lines": [
+                4,
+                5
+            ],
+            "explanation": "Inner function accesses outer function's variable"
+        },
+        {
+            "code_string": "const myClosure = outerFunction(10);\n// outerFunction finished running\nconsole.log(myClosure()); // Prints: 10\n// How does it remember outerVariable?",
+            "annotation": "Using returned function after outer finished",
+            "highlight_lines": [
+                3
+            ],
+            "explanation": "Closure remembers variable after outer function ends"
+        },
+        {
+            "code_string": "// Memory visualization:\n// myClosure = function() + {outerVariable: 10}\n// Function carries its environment!",
+            "annotation": "Mental model of closure structure",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Closure bundles function with captured variables"
+        },
+        {
+            "code_string": "function createCounter(start) {\n    let count = start;\n    return function() {\n        count++;\n        return count;\n    };\n}",
+            "annotation": "Counter function using closure for state",
+            "highlight_lines": [
+                4,
+                5
+            ],
+            "explanation": "Closure maintains private state between calls"
+        },
+        {
+            "code_string": "const counter1 = createCounter(0);\nconst counter2 = createCounter(100);\nconsole.log(counter1()); // 1\nconsole.log(counter2()); // 101",
+            "annotation": "Multiple independent closure instances",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "Each closure has its own variable copy"
+        },
+        {
+            "code_string": "console.log(counter1()); // 2\nconsole.log(counter1()); // 3\nconsole.log(counter2()); // 102\n// Each remembers its own count!",
+            "annotation": "Closures maintain separate state",
+            "highlight_lines": [
+                1,
+                2,
+                3
+            ],
+            "explanation": "Independent closure instances don't interfere"
+        },
+        {
+            "code_string": "function createBankAccount(balance) {\n    return {\n        deposit: amount => balance += amount,\n        withdraw: amount => balance -= amount,\n        getBalance: () => balance\n    };\n}",
+            "annotation": "Object with closure methods for privacy",
+            "highlight_lines": [
+                3,
+                4,
+                5
+            ],
+            "explanation": "Closures create private variables in objects"
+        },
+        {
+            "code_string": "const account = createBankAccount(1000);\naccount.deposit(500);\nconsole.log(account.getBalance()); // 1500\n// balance is completely private!",
+            "annotation": "Using closure-based private variables",
+            "highlight_lines": [
+                4
+            ],
+            "explanation": "Balance variable inaccessible from outside"
+        },
+        {
+            "code_string": "// Trying to cheat:\nconsole.log(account.balance); // undefined\naccount.balance = 9999;\nconsole.log(account.getBalance()); // Still 1500!",
+            "annotation": "Closure variables are truly private",
+            "highlight_lines": [
+                2,
+                4
+            ],
+            "explanation": "External modification attempts fail"
+        },
+        {
+            "code_string": "// Loop closure gotcha:\nfor (var i = 0; i < 3; i++) {\n    setTimeout(() => console.log(i), 100);\n}\n// Prints: 3, 3, 3 (not 0, 1, 2!)",
+            "annotation": "Common closure mistake in loops",
+            "highlight_lines": [
+                3,
+                5
+            ],
+            "explanation": "All closures capture same variable reference"
+        },
+        {
+            "code_string": "// Fix with IIFE (immediately invoked function):\nfor (var i = 0; i < 3; i++) {\n    (function(j) {\n        setTimeout(() => console.log(j), 100);\n    })(i);\n}",
+            "annotation": "Using IIFE to capture loop variable",
+            "highlight_lines": [
+                3,
+                4,
+                5
+            ],
+            "explanation": "IIFE creates separate closure for each iteration"
+        },
+        {
+            "code_string": "// Modern fix with let:\nfor (let i = 0; i < 3; i++) {\n    setTimeout(() => console.log(i), 100);\n}\n// Prints: 0, 1, 2 (as expected!)",
+            "annotation": "Block scoping solves closure loop issue",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Let creates new binding per iteration"
+        },
+        {
+            "code_string": "// Closure checklist:\n// \u2713 Inner function uses outer variable\n// \u2713 Inner function returned/passed around\n// \u2713 Variable survives outer function end\n// \u2713 Each closure has independent scope",
+            "annotation": "Key characteristics of closures",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Understanding these points ensures closure mastery"
+        }
+    ],
+    "outro": "Master closures and unlock JavaScript's true power!"
+}

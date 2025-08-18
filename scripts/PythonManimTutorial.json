@@ -1,0 +1,156 @@
+{
+    "intro": "Master Manim to create stunning mathematical animations!",
+    "outro": "Congratulations! You're now ready to create amazing mathematical animations!",
+    "sections": [
+        {
+            "annotation": "Installing Manim with pip or uv",
+            "code_string": "# Install Manim using pip\n# pip install manim\n\n# Or install using uv (faster package manager)\n# uv pip install manim\n\n# Verify installation\npython -c \"import manim; print('Manim installed successfully!')\"",
+            "explanation": "pip is standard Python package manager. uv provides faster installation speeds. Import test verifies successful installation.",
+            "highlight_lines": [
+                2,
+                5,
+                8
+            ]
+        },
+        {
+            "annotation": "Setting up LaTeX for mathematical expressions",
+            "code_string": "# Install LaTeX for mathematical rendering\n# Windows: Download MiKTeX or TeX Live\n# macOS: brew install --cask mactex\n# Ubuntu/Debian: sudo apt install texlive-full\n# Arch Linux: sudo pacman -S texlive-most\n\n# Verify LaTeX installation\n# latex --version",
+            "explanation": "LaTeX enables mathematical equation rendering. Different installation methods per operating system. Version check confirms LaTeX availability.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5,
+                8
+            ]
+        },
+        {
+            "annotation": "Installing supporting libraries and tools",
+            "code_string": "# Install additional dependencies\n# pip install pillow scipy\n# uv pip install pillow scipy\n\n# For development and video rendering\n# pip install jupyter notebook\n# ffmpeg is required for video output\n# Download from: https://ffmpeg.org/download.html",
+            "explanation": "Pillow handles image processing operations. Scipy provides scientific computing functions. FFmpeg enables video file generation.",
+            "highlight_lines": [
+                2,
+                3,
+                6,
+                8
+            ]
+        },
+        {
+            "annotation": "Creating your first Manim scene",
+            "code_string": "from manim import *\n\nclass BasicScene(Scene):\n    def construct(self):\n        # Create a simple text object\n        title = Text(\"Hello Manim!\")\n        self.play(Write(title))\n        self.wait(2)",
+            "explanation": "Scene class contains animation logic. construct() method defines what happens. Write() animates text appearance. wait() pauses between animations.",
+            "highlight_lines": [
+                3,
+                6,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Working with basic geometric shapes",
+            "code_string": "class GeometryBasics(Scene):\n    def construct(self):\n        # Create geometric shapes\n        circle = Circle(radius=1.5, color=BLUE)\n        square = Square(side_length=2, color=RED)\n        triangle = Triangle(color=GREEN)\n        \n        self.play(Create(circle))\n        self.play(Transform(circle, square))\n        self.play(Transform(circle, triangle))",
+            "explanation": "Circle, Square, Triangle are basic shapes. Create() draws shapes smoothly. Transform() morphs one shape into another.",
+            "highlight_lines": [
+                4,
+                5,
+                6,
+                8,
+                9,
+                10
+            ]
+        },
+        {
+            "annotation": "Displaying mathematical equations with LaTeX",
+            "code_string": "class MathEquations(Scene):\n    def construct(self):\n        # LaTeX mathematical expressions\n        equation = MathTex(r\"E = mc^2\")\n        formula = MathTex(r\"\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}\")\n        \n        self.play(Write(equation))\n        self.wait(1)\n        self.play(ReplacementTransform(equation, formula))\n        self.wait(2)",
+            "explanation": "MathTex renders LaTeX mathematical notation. Use raw strings for LaTeX. ReplacementTransform smoothly changes between equations.",
+            "highlight_lines": [
+                4,
+                5,
+                7,
+                9
+            ]
+        },
+        {
+            "annotation": "Controlling animation timing and speed",
+            "code_string": "class AnimationTiming(Scene):\n    def construct(self):\n        # Control animation speed and timing\n        text1 = Text(\"Fast\")\n        text2 = Text(\"Slow\")\n        text3 = Text(\"Custom\")\n        \n        self.play(Write(text1), run_time=0.5)\n        self.play(Write(text2), run_time=3)\n        self.play(Write(text3), rate_func=rate_functions.ease_in_out_cubic)",
+            "explanation": "run_time controls animation duration in seconds. rate_func changes animation easing. Different rate functions create varied motion effects.",
+            "highlight_lines": [
+                8,
+                9,
+                10
+            ]
+        },
+        {
+            "annotation": "Applying colors and visual styling",
+            "code_string": "class ColorAndStyle(Scene):\n    def construct(self):\n        # Apply colors and styles\n        text = Text(\"Styled Text\", color=PURPLE, font_size=48)\n        rect = Rectangle(width=4, height=2, fill_color=YELLOW, fill_opacity=0.5)\n        \n        self.add(rect)\n        self.play(Write(text))\n        self.play(text.animate.set_color(RED))\n        self.play(rect.animate.set_fill(BLUE, opacity=0.8))",
+            "explanation": "Color parameter sets object colors. fill_opacity controls transparency. animate property enables smooth property changes.",
+            "highlight_lines": [
+                4,
+                5,
+                9,
+                10
+            ]
+        },
+        {
+            "annotation": "Creating movement and rotation animations",
+            "code_string": "class MovementAnimation(Scene):\n    def construct(self):\n        # Move objects around the screen\n        dot = Dot(color=RED)\n        \n        self.add(dot)\n        self.play(dot.animate.shift(UP * 2))\n        self.play(dot.animate.shift(RIGHT * 3))\n        self.play(dot.animate.move_to(ORIGIN))\n        self.play(Rotate(dot, PI, about_point=UP))",
+            "explanation": "shift() moves objects by vector amounts. move_to() positions at specific coordinates. Rotate() spins objects around points.",
+            "highlight_lines": [
+                7,
+                8,
+                9,
+                10
+            ]
+        },
+        {
+            "annotation": "Drawing mathematical graphs and functions",
+            "code_string": "class GraphsAndPlots(Scene):\n    def construct(self):\n        # Create mathematical graphs\n        axes = Axes(x_range=[-3, 3], y_range=[-2, 2])\n        graph = axes.plot(lambda x: x**2, color=BLUE)\n        label = axes.get_graph_label(graph, label=\"y = x^2\")\n        \n        self.play(Create(axes))\n        self.play(Create(graph))\n        self.play(Write(label))",
+            "explanation": "Axes creates coordinate system. plot() draws function graphs. get_graph_label() adds equation labels to graphs.",
+            "highlight_lines": [
+                4,
+                5,
+                6,
+                8,
+                9,
+                10
+            ]
+        },
+        {
+            "annotation": "Animating numbers and dynamic values",
+            "code_string": "class NumberAnimation(Scene):\n    def construct(self):\n        # Animate changing numbers\n        number = DecimalNumber(0, num_decimal_places=2)\n        self.add(number)\n        \n        self.play(ChangeDecimalToValue(number, 3.14), run_time=2)\n        self.play(number.animate.set_value(100), run_time=3)\n        \n        # Add a tracker for dynamic updates\n        tracker = ValueTracker(0)\n        number.add_updater(lambda m: m.set_value(tracker.get_value()))",
+            "explanation": "DecimalNumber displays numeric values. ChangeDecimalToValue animates number changes. ValueTracker enables dynamic number updates.",
+            "highlight_lines": [
+                4,
+                7,
+                8,
+                11,
+                12
+            ]
+        },
+        {
+            "annotation": "Managing groups of objects efficiently",
+            "code_string": "class MultipleObjects(Scene):\n    def construct(self):\n        # Work with groups of objects\n        circles = VGroup(*[Circle(radius=0.5).shift(i*RIGHT) for i in range(5)])\n        circles.set_color_by_gradient(RED, BLUE)\n        \n        self.play(LaggedStart(*[Create(c) for c in circles], lag_ratio=0.2))\n        self.play(circles.animate.arrange(UP, buff=0.5))\n        self.play(FadeOut(circles))",
+            "explanation": "VGroup combines multiple objects together. set_color_by_gradient creates color transitions. LaggedStart staggers animation timing.",
+            "highlight_lines": [
+                4,
+                5,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "annotation": "Creating polished scene compositions",
+            "code_string": "class SceneTransitions(Scene):\n    def construct(self):\n        # Scene composition and layering\n        background = Rectangle(width=14, height=8, fill_color=DARK_BLUE, fill_opacity=1)\n        title = Text(\"Final Scene\", font_size=60, color=WHITE)\n        \n        self.add(background)\n        self.play(FadeIn(title, scale=0.5))\n        self.play(title.animate.to_edge(UP))\n        \n        # Cleanup and exit\n        self.play(FadeOut(VGroup(background, title)))",
+            "explanation": "Background rectangles set scene mood. FadeIn with scale creates zoom effects. to_edge() positions objects at screen edges.",
+            "highlight_lines": [
+                4,
+                5,
+                7,
+                8,
+                9,
+                12
+            ]
+        }
+    ]
+}

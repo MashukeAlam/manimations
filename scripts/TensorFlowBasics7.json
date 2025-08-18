@@ -1,0 +1,53 @@
+{
+    "intro": "Master data preprocessing for better models!",
+    "outro": "Excellent! Your data is now model-ready!",
+    "sections": [
+        {
+            "annotation": "Loading Fashion-MNIST dataset for preprocessing",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\nimport numpy as np\n\n# Load sample data\n(x_train, y_train), _ = keras.datasets.fashion_mnist.load_data()\nx_train = x_train[:1000]  # Use subset for demo\ny_train = y_train[:1000]\nprint(f\"Original data shape: {x_train.shape}\")",
+            "explanation": "Fashion-MNIST contains clothing images. We use a subset for faster demo. Preprocessing is crucial for model performance.",
+            "highlight_lines": [
+                5,
+                6,
+                7,
+                9
+            ]
+        },
+        {
+            "annotation": "Normalizing and reshaping data properly",
+            "code_string": "# Data normalization and reshaping\nx_train = x_train.astype('float32') / 255.0\nx_train = x_train.reshape(-1, 28, 28, 1)\n\n# One-hot encode labels\ny_train = keras.utils.to_categorical(y_train, 10)\nprint(f\"Preprocessed shape: {x_train.shape}\")\nprint(f\"Label shape: {y_train.shape}\")",
+            "explanation": "Normalize pixels to 0-1 range. Add channel dimension for CNN. One-hot encoding converts labels to categorical format.",
+            "highlight_lines": [
+                2,
+                3,
+                6,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Creating data augmentation for training variety",
+            "code_string": "# Data augmentation for better generalization\ndatagen = keras.preprocessing.image.ImageDataGenerator(\n    rotation_range=20,\n    width_shift_range=0.1,\n    height_shift_range=0.1,\n    horizontal_flip=True\n)\ndatagen.fit(x_train)",
+            "explanation": "Data augmentation creates variations of training images. Rotation, shifts, and flips help model generalize to new data.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5,
+                6,
+                8
+            ]
+        },
+        {
+            "annotation": "Building efficient data pipelines with tf.data",
+            "code_string": "# Using tf.data for efficient data pipeline\ndataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))\ndataset = dataset.batch(32).shuffle(1000).prefetch(tf.data.AUTOTUNE)\n\nprint(\"Efficient data pipeline created\")\nfor batch in dataset.take(1):\n    print(f\"Batch shape: {batch[0].shape}\")\n    break",
+            "explanation": "tf.data creates optimized data pipelines. Batching, shuffling, and prefetching improve training speed and randomization.",
+            "highlight_lines": [
+                2,
+                3,
+                6,
+                7
+            ]
+        }
+    ]
+}

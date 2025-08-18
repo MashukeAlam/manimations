@@ -1,0 +1,54 @@
+{
+  "intro": "Build robust web servers in Go using net/http package with routing, middleware, and JSON APIs",
+  "sections": [
+    {
+      "code_string": "package main\n\nimport (\n    \"fmt\"\n    \"log\"\n    \"net/http\"\n)\n\nfunc homeHandler(w http.ResponseWriter, r *http.Request) {\n    fmt.Fprintf(w, \"Welcome to Go Web Server!\\n\")\n    fmt.Fprintf(w, \"Method: %s\\n\", r.Method)\n    fmt.Fprintf(w, \"URL: %s\\n\", r.URL.Path)\n}\n\nfunc main() {\n    http.HandleFunc(\"/\", homeHandler)\n    log.Println(\"Server starting on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", nil))\n}",
+      "annotation": "Basic HTTP server and handler",
+      "highlight_lines": [9, 10, 11, 12, 16, 17, 18],
+      "explanation": "Handler functions receive ResponseWriter for output and Request for input data. Use fmt.Fprintf to write responses. Register handlers with paths and start server on specified port with logging."
+    },
+    {
+      "code_string": "import (\n    \"encoding/json\"\n    \"net/http\"\n)\n\ntype User struct {\n    ID    int    `json:\"id\"`\n    Name  string `json:\"name\"`\n    Email string `json:\"email\"`\n}\n\nvar users = []User{\n    {ID: 1, Name: \"Alice\", Email: \"alice@example.com\"},\n    {ID: 2, Name: \"Bob\", Email: \"bob@example.com\"},\n}\n\nfunc usersHandler(w http.ResponseWriter, r *http.Request) {\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    json.NewEncoder(w).Encode(users)\n}",
+      "annotation": "JSON API with struct serialization",
+      "highlight_lines": [6, 7, 8, 9, 12, 13, 14, 17, 18, 19],
+      "explanation": "Define structs with JSON tags for field mapping. Set Content-Type header for proper JSON response. Use json.NewEncoder to serialize structs directly to response writer efficiently."
+    },
+    {
+      "code_string": "import (\n    \"strconv\"\n    \"strings\"\n)\n\nfunc userHandler(w http.ResponseWriter, r *http.Request) {\n    // Extract ID from URL path\n    path := strings.TrimPrefix(r.URL.Path, \"/user/\")\n    id, err := strconv.Atoi(path)\n    if err != nil {\n        http.Error(w, \"Invalid user ID\", http.StatusBadRequest)\n        return\n    }\n    \n    // Find user by ID\n    for _, user := range users {\n        if user.ID == id {\n            w.Header().Set(\"Content-Type\", \"application/json\")\n            json.NewEncoder(w).Encode(user)\n            return\n        }\n    }\n    \n    http.Error(w, \"User not found\", http.StatusNotFound)\n}",
+      "annotation": "URL parameter parsing and error handling",
+      "highlight_lines": [8, 9, 10, 11, 16, 17, 18, 19, 24],
+      "explanation": "Parse URL path to extract parameters manually. Convert strings to integers with error handling. Search data structures for matching records. Return appropriate HTTP status codes for different error conditions."
+    },
+    {
+      "code_string": "func createUserHandler(w http.ResponseWriter, r *http.Request) {\n    if r.Method != http.MethodPost {\n        http.Error(w, \"Method not allowed\", http.StatusMethodNotAllowed)\n        return\n    }\n    \n    var newUser User\n    err := json.NewDecoder(r.Body).Decode(&newUser)\n    if err != nil {\n        http.Error(w, \"Invalid JSON\", http.StatusBadRequest)\n        return\n    }\n    \n    // Simple ID assignment\n    newUser.ID = len(users) + 1\n    users = append(users, newUser)\n    \n    w.Header().Set(\"Content-Type\", \"application/json\")\n    w.WriteHeader(http.StatusCreated)\n    json.NewEncoder(w).Encode(newUser)\n}",
+      "annotation": "POST request handling with JSON parsing",
+      "highlight_lines": [2, 3, 7, 8, 9, 10, 15, 16, 18, 19, 20],
+      "explanation": "Check HTTP method to ensure correct request type. Parse JSON request body into struct using Decoder. Validate input and handle parsing errors appropriately. Return created resource with 201 status code."
+    },
+    {
+      "code_string": "import \"time\"\n\nfunc loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {\n    return func(w http.ResponseWriter, r *http.Request) {\n        start := time.Now()\n        \n        // Call the next handler\n        next(w, r)\n        \n        // Log request details\n        log.Printf(\"%s %s %v\", r.Method, r.URL.Path, time.Since(start))\n    }\n}\n\nfunc corsMiddleware(next http.HandlerFunc) http.HandlerFunc {\n    return func(w http.ResponseWriter, r *http.Request) {\n        w.Header().Set(\"Access-Control-Allow-Origin\", \"*\")\n        w.Header().Set(\"Access-Control-Allow-Methods\", \"GET, POST, PUT, DELETE\")\n        w.Header().Set(\"Access-Control-Allow-Headers\", \"Content-Type\")\n        \n        if r.Method == \"OPTIONS\" {\n            return\n        }\n        \n        next(w, r)\n    }\n}",
+      "annotation": "Middleware for logging and CORS",
+      "highlight_lines": [3, 4, 5, 8, 11, 15, 16, 17, 18, 19, 21, 25],
+      "explanation": "Middleware wraps handlers to add cross-cutting functionality. Measure request duration and log details after processing. Add CORS headers for browser compatibility. Handle preflight OPTIONS requests appropriately."
+    },
+    {
+      "code_string": "import \"github.com/gorilla/mux\"\n\nfunc setupRoutes() *mux.Router {\n    r := mux.NewRouter()\n    \n    // Basic routes\n    r.HandleFunc(\"/\", corsMiddleware(loggingMiddleware(homeHandler))).Methods(\"GET\")\n    r.HandleFunc(\"/users\", corsMiddleware(loggingMiddleware(usersHandler))).Methods(\"GET\")\n    r.HandleFunc(\"/users\", corsMiddleware(loggingMiddleware(createUserHandler))).Methods(\"POST\")\n    \n    // Route with path parameter\n    r.HandleFunc(\"/user/{id:[0-9]+}\", corsMiddleware(loggingMiddleware(getUserByID))).Methods(\"GET\")\n    \n    return r\n}\n\nfunc getUserByID(w http.ResponseWriter, r *http.Request) {\n    vars := mux.Vars(r)\n    id, _ := strconv.Atoi(vars[\"id\"])\n    \n    for _, user := range users {\n        if user.ID == id {\n            w.Header().Set(\"Content-Type\", \"application/json\")\n            json.NewEncoder(w).Encode(user)\n            return\n        }\n    }\n    \n    http.Error(w, \"User not found\", http.StatusNotFound)\n}",
+      "annotation": "Advanced routing with Gorilla Mux",
+      "highlight_lines": [3, 4, 7, 8, 9, 12, 17, 18, 19, 21, 22, 23, 24, 29],
+      "explanation": "Use Gorilla Mux for advanced routing with path variables and regex patterns. Chain middleware functions for comprehensive request processing. Extract path variables easily with mux.Vars() method."
+    },
+    {
+      "code_string": "func updateUserHandler(w http.ResponseWriter, r *http.Request) {\n    vars := mux.Vars(r)\n    id, _ := strconv.Atoi(vars[\"id\"])\n    \n    var updatedUser User\n    err := json.NewDecoder(r.Body).Decode(&updatedUser)\n    if err != nil {\n        http.Error(w, \"Invalid JSON\", http.StatusBadRequest)\n        return\n    }\n    \n    for i, user := range users {\n        if user.ID == id {\n            updatedUser.ID = id\n            users[i] = updatedUser\n            w.Header().Set(\"Content-Type\", \"application/json\")\n            json.NewEncoder(w).Encode(updatedUser)\n            return\n        }\n    }\n    \n    http.Error(w, \"User not found\", http.StatusNotFound)\n}\n\nfunc deleteUserHandler(w http.ResponseWriter, r *http.Request) {\n    vars := mux.Vars(r)\n    id, _ := strconv.Atoi(vars[\"id\"])\n    \n    for i, user := range users {\n        if user.ID == id {\n            users = append(users[:i], users[i+1:]...)\n            w.WriteHeader(http.StatusNoContent)\n            return\n        }\n    }\n    \n    http.Error(w, \"User not found\", http.StatusNotFound)\n}",
+      "annotation": "Complete CRUD operations",
+      "highlight_lines": [2, 3, 5, 6, 12, 13, 14, 15, 16, 17, 26, 27, 29, 30, 31, 32],
+      "explanation": "Implement UPDATE and DELETE operations to complete CRUD functionality. Parse JSON for updates while preserving the original ID. Use slice operations to remove elements. Return appropriate status codes for different operations."
+    },
+    {
+      "code_string": "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"log\"\n    \"net/http\"\n    \"strconv\"\n    \"strings\"\n    \"time\"\n    \n    \"github.com/gorilla/mux\"\n)\n\ntype User struct {\n    ID    int    `json:\"id\"`\n    Name  string `json:\"name\"`\n    Email string `json:\"email\"`\n}\n\nvar users = []User{\n    {ID: 1, Name: \"Alice\", Email: \"alice@example.com\"},\n    {ID: 2, Name: \"Bob\", Email: \"bob@example.com\"},\n}\n\nfunc main() {\n    router := setupRoutes()\n    \n    log.Println(\"Server starting on :8080\")\n    log.Fatal(http.ListenAndServe(\":8080\", router))\n}",
+      "annotation": "Complete server with all imports and main function",
+      "highlight_lines": [1, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 16, 17, 18, 21, 22, 23, 26, 27, 29, 30],
+      "explanation": "Complete server implementation with all necessary imports. Initialize the router with all configured routes and middleware. Start the server using the Gorilla Mux router instead of the default ServeMux for advanced routing capabilities."
+    }
+  ],
+  "outro": "You've mastered building robust web servers in Go with routing, middleware, and JSON APIs!"
+}

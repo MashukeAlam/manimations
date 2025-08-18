@@ -1,0 +1,42 @@
+{
+  "intro": "Build a complete command-line tool in Go with argument parsing, file operations, and real-world functionality",
+  "sections": [
+    {
+      "code_string": "package main\n\nimport (\n    \"flag\"\n    \"fmt\"\n    \"os\"\n)\n\nfunc main() {\n    var filename = flag.String(\"file\", \"\", \"File to process\")\n    var verbose = flag.Bool(\"verbose\", false, \"Enable verbose output\")\n    flag.Parse()\n    \n    if *filename == \"\" {\n        fmt.Fprintf(os.Stderr, \"Usage: %s -file <filename>\\n\", os.Args[0])\n        os.Exit(1)\n    }\n}",
+      "annotation": "CLI argument parsing setup",
+      "highlight_lines": [4, 10, 11, 12, 14, 15, 16],
+      "explanation": "Use flag package for command-line argument parsing. Define string and boolean flags with default values and descriptions. Parse arguments and validate required parameters before proceeding."
+    },
+    {
+      "code_string": "import (\n    \"bufio\"\n    \"os\"\n)\n\nfunc readFile(filename string) ([]string, error) {\n    file, err := os.Open(filename)\n    if err != nil {\n        return nil, fmt.Errorf(\"failed to open file: %w\", err)\n    }\n    defer file.Close()\n    \n    var lines []string\n    scanner := bufio.NewScanner(file)\n    \n    for scanner.Scan() {\n        lines = append(lines, scanner.Text())\n    }\n    \n    return lines, scanner.Err()\n}",
+      "annotation": "File reading with error handling",
+      "highlight_lines": [7, 8, 9, 11, 14, 16, 17, 20],
+      "explanation": "Open files safely with error checking. Use defer to ensure file closure. Scanner reads line by line efficiently. Return both data and potential scanning errors for proper error handling."
+    },
+    {
+      "code_string": "import (\n    \"regexp\"\n    \"strings\"\n)\n\ntype Statistics struct {\n    TotalLines    int\n    EmptyLines    int\n    WordCount     int\n    CharCount     int\n    LongestLine   string\n}\n\nfunc analyzeText(lines []string) Statistics {\n    stats := Statistics{}\n    wordRegex := regexp.MustCompile(`\\S+`)\n    \n    for _, line := range lines {\n        stats.TotalLines++\n        stats.CharCount += len(line)\n        \n        if strings.TrimSpace(line) == \"\" {\n            stats.EmptyLines++\n        } else {\n            words := wordRegex.FindAllString(line, -1)\n            stats.WordCount += len(words)\n        }\n        \n        if len(line) > len(stats.LongestLine) {\n            stats.LongestLine = line\n        }\n    }\n    \n    return stats\n}",
+      "annotation": "Text analysis with regex and statistics",
+      "highlight_lines": [6, 7, 8, 9, 10, 11, 15, 16, 18, 19, 20, 22, 25, 26, 29, 30],
+      "explanation": "Define struct to hold analysis results. Use regex to find words efficiently. Process each line collecting multiple statistics. Track longest line by comparing lengths during iteration."
+    },
+    {
+      "code_string": "func displayResults(stats Statistics, verbose bool, filename string) {\n    fmt.Printf(\"\\n=== File Analysis: %s ===\\n\", filename)\n    fmt.Printf(\"Total lines: %d\\n\", stats.TotalLines)\n    fmt.Printf(\"Non-empty lines: %d\\n\", stats.TotalLines-stats.EmptyLines)\n    fmt.Printf(\"Word count: %d\\n\", stats.WordCount)\n    fmt.Printf(\"Character count: %d\\n\", stats.CharCount)\n    \n    if verbose {\n        fmt.Printf(\"\\n--- Detailed Information ---\\n\")\n        fmt.Printf(\"Empty lines: %d\\n\", stats.EmptyLines)\n        fmt.Printf(\"Average words per line: %.1f\\n\", \n            float64(stats.WordCount)/float64(stats.TotalLines))\n        fmt.Printf(\"Longest line (%d chars): %.50s...\\n\", \n            len(stats.LongestLine), stats.LongestLine)\n    }\n}",
+      "annotation": "Formatted output with verbose mode",
+      "highlight_lines": [2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14],
+      "explanation": "Format output professionally with headers and clear labels. Calculate derived statistics like averages. Implement verbose mode for additional details. Truncate long lines for readable output."
+    },
+    {
+      "code_string": "func main() {\n    var filename = flag.String(\"file\", \"\", \"File to process\")\n    var verbose = flag.Bool(\"verbose\", false, \"Enable verbose output\")\n    flag.Parse()\n    \n    if *filename == \"\" {\n        fmt.Fprintf(os.Stderr, \"Usage: %s -file <filename> [-verbose]\\n\", os.Args[0])\n        os.Exit(1)\n    }\n    \n    lines, err := readFile(*filename)\n    if err != nil {\n        fmt.Fprintf(os.Stderr, \"Error: %v\\n\", err)\n        os.Exit(1)\n    }\n    \n    stats := analyzeText(lines)\n    displayResults(stats, *verbose, *filename)\n}",
+      "annotation": "Complete CLI tool integration",
+      "highlight_lines": [6, 7, 8, 11, 12, 13, 14, 17, 18],
+      "explanation": "Integrate all components into working CLI tool. Handle errors at each step with appropriate exit codes. Dereference flag pointers when passing to functions. Provide clear usage instructions for users."
+    },
+    {
+      "code_string": "// Build and run examples:\n// go build -o textanalyzer main.go\n// ./textanalyzer -file sample.txt\n// ./textanalyzer -file large.txt -verbose\n\n// Example output:\n// === File Analysis: sample.txt ===\n// Total lines: 42\n// Non-empty lines: 38\n// Word count: 256\n// Character count: 1847",
+      "annotation": "Building and usage examples",
+      "highlight_lines": [2, 3, 4, 7, 8, 9, 10, 11],
+      "explanation": "Build executable with go build command and descriptive name. Test with different file sizes and flag combinations. Example output shows professional formatting and useful statistics for text analysis tasks."
+    }
+  ],
+  "outro": "You've built a complete CLI tool with professional argument parsing, file operations, and formatted output!"
+}

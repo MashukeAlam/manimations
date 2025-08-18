@@ -1,0 +1,137 @@
+{
+    "intro": "Lists vs Dictionaries: Why speed matters so much!",
+    "outro": "Now you know when speed beats simplicity!",
+    "sections": [
+        {
+            "annotation": "Setting up our performance comparison",
+            "code_string": "# Book analogy setup\nbooks = ['Harry Potter', 'Lord of Rings', 'Dune']\nbook_pages = {'Harry Potter': 309, 'Dune': 688}\nprint('Data structures ready!')",
+            "explanation": "List stores ordered items, dict maps keys",
+            "highlight_lines": [
+                2,
+                3
+            ]
+        },
+        {
+            "annotation": "List search checks every item sequentially",
+            "code_string": "# Finding in a list - like flipping pages\nbooks = ['Book1', 'Book2', 'Book3', 'Book4']\nif 'Book3' in books:\n    print('Found it!')\n# Python checks: Book1? No... Book2? No... Book3? Yes!",
+            "explanation": "List search is linear - checks one by one",
+            "highlight_lines": [
+                3,
+                5
+            ]
+        },
+        {
+            "annotation": "Dictionary search jumps directly to location",
+            "code_string": "# Finding in dictionary - like using index\npages = {'Book1': 200, 'Book2': 300, 'Book3': 400}\nif 'Book3' in pages:\n    print('Found instantly!')\n# Python uses hash: direct lookup!",
+            "explanation": "Dictionary uses hash table for instant access",
+            "highlight_lines": [
+                3,
+                5
+            ]
+        },
+        {
+            "annotation": "Measuring actual list search performance",
+            "code_string": "import time\n# Timing list search\nstart = time.time()\nfor _ in range(100000):\n    'target' in large_list\nlist_time = time.time() - start",
+            "explanation": "Timing reveals list search gets slower",
+            "highlight_lines": [
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "Measuring dictionary search performance",
+            "code_string": "# Timing dictionary search\nstart = time.time()\nfor _ in range(100000):\n    'target' in large_dict\ndict_time = time.time() - start\nprint(f'Dict is {list_time/dict_time}x faster!')",
+            "explanation": "Dictionary remains consistently fast",
+            "highlight_lines": [
+                4,
+                6
+            ]
+        },
+        {
+            "annotation": "Mathematical difference in performance growth",
+            "code_string": "# Big O notation explanation\n# List search: O(n) - time grows with size\n# Dict search: O(1) - constant time always\nprint('1000 items: List=1000 steps, Dict=1 step')\nprint('1M items: List=1M steps, Dict=1 step')",
+            "explanation": "Dictionary performance doesn't degrade with size",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "List requires loop to find specific data",
+            "code_string": "# Real world example: User lookup\nusers_list = [('john', 25), ('jane', 30), ('bob', 35)]\n# Find jane's age - check every tuple!\nfor name, age in users_list:\n    if name == 'jane':\n        print(f'Jane is {age}')",
+            "explanation": "List search needs explicit iteration",
+            "highlight_lines": [
+                4,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Dictionary provides direct key access",
+            "code_string": "# Dictionary version - instant lookup\nusers_dict = {'john': 25, 'jane': 30, 'bob': 35}\n# Find jane's age - direct access!\nprint(f\"Jane is {users_dict['jane']}\")\n# No loop needed!",
+            "explanation": "Dictionary eliminates need for loops",
+            "highlight_lines": [
+                4
+            ]
+        },
+        {
+            "annotation": "Dictionary uses more memory than lists",
+            "code_string": "# Memory trade-off visualization\nmy_list = [1, 2, 3]  # 3 values\nmy_dict = {1: 'a', 2: 'b', 3: 'c'}  # 3 keys + 3 values\nprint('List: stores values only')\nprint('Dict: stores keys, values, and hash table')",
+            "explanation": "Speed improvement comes at memory cost",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "Choosing right data structure matters",
+            "code_string": "# When to use lists vs dictionaries\n# Use list: ordered data, sequential access\nscores = [95, 87, 92, 88]  # Test scores in order\n# Use dict: key-value lookup, fast search\nstudent_grades = {'Alice': 95, 'Bob': 87}",
+            "explanation": "Lists for order, dictionaries for lookup",
+            "highlight_lines": [
+                3,
+                5
+            ]
+        },
+        {
+            "annotation": "Performance gap widens with data size",
+            "code_string": "# Performance with different sizes\nsizes = [100, 1000, 10000, 100000]\nfor size in sizes:\n    # List gets slower: 0.1ms, 1ms, 10ms, 100ms\n    # Dict stays fast: 0.001ms, 0.001ms, 0.001ms\n    print(f'Size {size}: Dict wins!')",
+            "explanation": "Dictionary advantage grows with more data",
+            "highlight_lines": [
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "How dictionary speed works internally",
+            "code_string": "# Hash collision explanation\n# Perfect world: each key gets unique slot\nhash_table = ['', '', '', '']\nhash_table[hash('key') % 4] = 'value'\n# Real world: sometimes keys collide",
+            "explanation": "Hash function maps keys to array positions",
+            "highlight_lines": [
+                3,
+                4
+            ]
+        },
+        {
+            "annotation": "Adding elements is fast in both",
+            "code_string": "# Common operations comparison\n# List append: O(1) - fast!\nmy_list.append('new_item')\n# Dict insert: O(1) - also fast!\nmy_dict['new_key'] = 'new_value'\n# Both are efficient for adding",
+            "explanation": "Insertion performance similar for both structures",
+            "highlight_lines": [
+                3,
+                5
+            ]
+        },
+        {
+            "annotation": "Final decision guide for data structures",
+            "code_string": "# Summary: Choose your weapon wisely!\n# Lists: [item1, item2] - for sequences\n# Dicts: {key: value} - for lookups\n# Remember: O(n) vs O(1) makes huge difference!\nprint('Speed vs Memory: pick your battle!')",
+            "explanation": "Understanding trade-offs enables better choices",
+            "highlight_lines": [
+                2,
+                3,
+                4
+            ]
+        }
+    ]
+}

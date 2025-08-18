@@ -1,0 +1,53 @@
+{
+    "intro": "Monitor and control training with callbacks!",
+    "outro": "Fantastic! You've mastered training control with callbacks!",
+    "sections": [
+        {
+            "annotation": "Setting up model for callback demonstration",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\nimport numpy as np\n\n# Create sample model and data\nmodel = keras.Sequential([\n    keras.layers.Dense(64, activation='relu', input_shape=(10,)),\n    keras.layers.Dropout(0.3),\n    keras.layers.Dense(1, activation='sigmoid')\n])",
+            "explanation": "Create a simple binary classification model. We'll use callbacks to monitor and control the training process effectively.",
+            "highlight_lines": [
+                6,
+                7,
+                8,
+                9
+            ]
+        },
+        {
+            "annotation": "Creating training and validation datasets",
+            "code_string": "# Prepare training data\nX_train = np.random.random((1000, 10))\ny_train = np.random.randint(0, 2, (1000, 1))\nX_val = np.random.random((200, 10))\ny_val = np.random.randint(0, 2, (200, 1))\n\nmodel.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])",
+            "explanation": "Generate random binary classification data. Separate validation set is crucial for monitoring overfitting during training.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5,
+                7
+            ]
+        },
+        {
+            "annotation": "Creating callbacks for training control",
+            "code_string": "# Define useful callbacks\nearly_stopping = keras.callbacks.EarlyStopping(\n    monitor='val_loss', patience=3, restore_best_weights=True\n)\nmodel_checkpoint = keras.callbacks.ModelCheckpoint(\n    'best_model.h5', save_best_only=True, monitor='val_accuracy'\n)\nreduce_lr = keras.callbacks.ReduceLROnPlateau(\n    monitor='val_loss', factor=0.2, patience=2\n)",
+            "explanation": "EarlyStopping prevents overfitting. ModelCheckpoint saves best model. ReduceLROnPlateau adjusts learning rate when training plateaus.",
+            "highlight_lines": [
+                2,
+                3,
+                5,
+                6,
+                8,
+                9
+            ]
+        },
+        {
+            "annotation": "Training model with callback monitoring",
+            "code_string": "# Train with callbacks\nhistory = model.fit(\n    X_train, y_train,\n    validation_data=(X_val, y_val),\n    epochs=20,\n    callbacks=[early_stopping, model_checkpoint, reduce_lr],\n    verbose=1\n)\n\nprint(f\"Training stopped at epoch: {len(history.history['loss'])}\")",
+            "explanation": "Callbacks automatically monitor training. Early stopping may end training early. Best model is saved automatically during training.",
+            "highlight_lines": [
+                2,
+                4,
+                6,
+                10
+            ]
+        }
+    ]
+}

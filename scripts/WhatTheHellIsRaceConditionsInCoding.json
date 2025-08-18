@@ -1,0 +1,137 @@
+{
+    "intro": "Race conditions happen when code races itself!",
+    "sections": [
+        {
+            "code_string": "let bankAccount = 1000;\n// Two people see same balance\nconsole.log('Person A sees:', bankAccount);\nconsole.log('Person B sees:', bankAccount);",
+            "annotation": "Both processes read same initial value",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "Multiple threads reading shared data simultaneously"
+        },
+        {
+            "code_string": "async function withdraw(person, amount) {\n    console.log(`${person}: Checking balance...`);\n    if (bankAccount >= amount) {\n        // Problem happens here!\n    }\n}",
+            "annotation": "Function checks if withdrawal is possible",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "Both processes pass the balance check"
+        },
+        {
+            "code_string": "if (bankAccount >= amount) {\n    console.log(`${person}: Can withdraw!`);\n    // Simulate network delay\n    await new Promise(r => setTimeout(r, 100));\n}",
+            "annotation": "Delay creates window for race condition",
+            "highlight_lines": [
+                4
+            ],
+            "explanation": "Time gap allows other process to interfere"
+        },
+        {
+            "code_string": "// After delay, both processes execute:\nbankAccount -= amount;\nconsole.log(`Balance: ${bankAccount}`);\n// Result: -200 (overdrawn!)",
+            "annotation": "Both processes subtract from same variable",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Concurrent modifications lead to incorrect result"
+        },
+        {
+            "code_string": "// Timeline visualization:\n// T=0ms: A sees $1000, B sees $1000\n// T=100ms: A withdraws $600 (balance=$400)\n// T=101ms: B withdraws $600 (balance=-$200)",
+            "annotation": "Timeline shows overlapping execution",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "Interleaved execution causes data corruption"
+        },
+        {
+            "code_string": "Promise.all([\n    withdraw('Person A', 600),\n    withdraw('Person B', 600)\n]);\n// Both start simultaneously!",
+            "annotation": "Starting multiple async operations together",
+            "highlight_lines": [
+                1,
+                2,
+                3
+            ],
+            "explanation": "Promise.all triggers race condition"
+        },
+        {
+            "code_string": "let isLocked = false;\n// Simple lock mechanism\nwhile (isLocked) {\n    await new Promise(r => setTimeout(r, 10));\n}",
+            "annotation": "Implementing basic lock for synchronization",
+            "highlight_lines": [
+                1,
+                3
+            ],
+            "explanation": "Lock prevents multiple processes accessing resource"
+        },
+        {
+            "code_string": "// Acquire lock\nisLocked = true;\nconsole.log('Got exclusive access');\n// Critical section protected",
+            "annotation": "Acquiring lock before critical operation",
+            "highlight_lines": [
+                2
+            ],
+            "explanation": "Setting lock ensures exclusive access"
+        },
+        {
+            "code_string": "if (bankAccount >= amount) {\n    bankAccount -= amount;\n    console.log(`Safe withdrawal: ${bankAccount}`);\n}\nisLocked = false; // Release lock",
+            "annotation": "Protected critical section with lock release",
+            "highlight_lines": [
+                5
+            ],
+            "explanation": "Always release lock after critical section"
+        },
+        {
+            "code_string": "// With locks:\n// T=0ms: A gets lock, B waits\n// T=100ms: A finishes, releases lock\n// T=101ms: B gets lock, sees $400, fails",
+            "annotation": "Lock ensures sequential access to resource",
+            "highlight_lines": [
+                2,
+                4
+            ],
+            "explanation": "Synchronization prevents race conditions"
+        },
+        {
+            "code_string": "// Real-world examples:\n// - File writing conflicts\n// - Counter increments\n// - Shopping cart updates\n// - Database record modifications",
+            "annotation": "Common scenarios where races occur",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Race conditions appear in many applications"
+        },
+        {
+            "code_string": "// Modern solutions:\n// - Mutexes/Semaphores\n// - Atomic operations\n// - Database transactions\n// - Message queues",
+            "annotation": "Professional tools for preventing races",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Industry uses robust synchronization mechanisms"
+        },
+        {
+            "code_string": "// Detection tips:\n// - Inconsistent results\n// - Works sometimes, fails others\n// - Worse with more concurrent users\n// - Hard to reproduce bugs",
+            "annotation": "Signs that indicate race conditions",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Race conditions create unpredictable behavior"
+        },
+        {
+            "code_string": "// Prevention checklist:\n// \u2713 Identify shared resources\n// \u2713 Use proper synchronization\n// \u2713 Test with multiple threads\n// \u2713 Review critical sections",
+            "annotation": "Best practices for race-free code",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Systematic approach prevents race conditions"
+        }
+    ],
+    "outro": "Now you can write race-free concurrent code!"
+}

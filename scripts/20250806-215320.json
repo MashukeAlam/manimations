@@ -1,0 +1,138 @@
+{
+    "intro": "Master advanced HTML techniques today!",
+    "sections": [
+        {
+            "code_string": "<template id=\"user-card\">\n  <div class=\"card\">\n    <slot name=\"avatar\"></slot>\n    <slot name=\"content\"></slot>\n    <slot name=\"actions\"></slot>\n  </div>\n</template>",
+            "annotation": "HTML template with named slots",
+            "highlight_lines": [
+                1,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Templates create reusable markup structures. Named slots allow flexible content insertion at designated positions within the template."
+        },
+        {
+            "code_string": "<details open>\n  <summary>Advanced Features</summary>\n  <p>Content revealed by default</p>\n  <details>\n    <summary>Nested Details</summary>\n    <p>Collapsible within collapsible</p>\n  </details>\n</details>",
+            "annotation": "Native collapsible content with nesting",
+            "highlight_lines": [
+                1,
+                4,
+                5
+            ],
+            "explanation": "Details elements create native disclosure widgets. The open attribute shows content initially. Nesting creates hierarchical collapsible structures."
+        },
+        {
+            "code_string": "<picture>\n  <source media=\"(min-width: 800px)\" \n          srcset=\"large.webp\" type=\"image/webp\">\n  <source media=\"(min-width: 400px)\" \n          srcset=\"medium.jpg\">\n  <img src=\"small.jpg\" alt=\"Responsive image\">\n</picture>",
+            "annotation": "Art direction with multiple sources",
+            "highlight_lines": [
+                2,
+                4,
+                6
+            ],
+            "explanation": "Picture elements enable art direction and format selection. Sources are evaluated top-down until a match is found."
+        },
+        {
+            "code_string": "<dialog id=\"modal\" aria-labelledby=\"title\">\n  <form method=\"dialog\">\n    <h2 id=\"title\">Confirm Action</h2>\n    <button value=\"cancel\">Cancel</button>\n    <button value=\"confirm\" autofocus>OK</button>\n  </form>\n</dialog>",
+            "annotation": "Native modal dialog with form",
+            "highlight_lines": [
+                1,
+                2,
+                5
+            ],
+            "explanation": "Dialog elements create native modals with built-in focus management. Method dialog automatically closes on form submission."
+        },
+        {
+            "code_string": "<input type=\"text\" \n       pattern=\"[A-Za-z]{3}\\d{3}\"\n       title=\"3 letters followed by 3 numbers\"\n       required\n       aria-describedby=\"help\">\n<div id=\"help\">Format: ABC123</div>",
+            "annotation": "Advanced form validation with regex",
+            "highlight_lines": [
+                2,
+                3,
+                5
+            ],
+            "explanation": "Pattern attribute uses regex for custom validation. Title provides tooltip text. Aria-describedby links help text for accessibility."
+        },
+        {
+            "code_string": "<datalist id=\"browsers\">\n  <option value=\"Chrome\">Google Chrome</option>\n  <option value=\"Firefox\">Mozilla Firefox</option>\n</datalist>\n<input list=\"browsers\" \n       autocomplete=\"off\"\n       placeholder=\"Type browser name\">",
+            "annotation": "Auto-complete input with custom options",
+            "highlight_lines": [
+                1,
+                5,
+                6
+            ],
+            "explanation": "Datalist provides predefined options for inputs. List attribute connects input to datalist. Autocomplete off prevents browser suggestions."
+        },
+        {
+            "code_string": "<div contenteditable=\"true\"\n     spellcheck=\"false\"\n     data-placeholder=\"Start typing...\"\n     role=\"textbox\"\n     aria-multiline=\"true\">\n</div>",
+            "annotation": "Custom editable text area",
+            "highlight_lines": [
+                1,
+                2,
+                4
+            ],
+            "explanation": "Contenteditable creates editable regions. Spellcheck controls spell checking. Role and aria attributes ensure proper accessibility semantics."
+        },
+        {
+            "code_string": "<video controls preload=\"metadata\" \n       poster=\"thumbnail.jpg\">\n  <source src=\"video.webm\" type=\"video/webm\">\n  <source src=\"video.mp4\" type=\"video/mp4\">\n  <track kind=\"subtitles\" src=\"en.vtt\" \n         srclang=\"en\" label=\"English\">\n</video>",
+            "annotation": "Multi-format video with subtitles",
+            "highlight_lines": [
+                1,
+                5,
+                6
+            ],
+            "explanation": "Multiple sources provide format fallbacks. Track elements add subtitles and captions. Preload metadata loads video information only."
+        },
+        {
+            "code_string": "<canvas id=\"chart\" width=\"300\" height=\"200\"\n        role=\"img\" aria-label=\"Sales chart\">\n  <table>\n    <tr><th>Quarter</th><th>Sales</th></tr>\n    <tr><td>Q1</td><td>$100k</td></tr>\n  </table>\n</canvas>",
+            "annotation": "Canvas with accessible fallback content",
+            "highlight_lines": [
+                1,
+                2,
+                3
+            ],
+            "explanation": "Canvas content provides fallback for non-supporting browsers. Role and aria-label ensure screen reader accessibility for visual content."
+        },
+        {
+            "code_string": "<div draggable=\"true\"\n     ondragstart=\"event.dataTransfer.setData('text', this.id)\"\n     id=\"item1\">\n  Drag me!\n</div>\n<div ondrop=\"handleDrop(event)\" \n     ondragover=\"event.preventDefault()\">\n  Drop zone\n</div>",
+            "annotation": "Native drag and drop interface",
+            "highlight_lines": [
+                1,
+                2,
+                6,
+                7
+            ],
+            "explanation": "Draggable attribute enables drag functionality. DataTransfer carries data between drag source and drop target during operation."
+        },
+        {
+            "code_string": "<fieldset disabled>\n  <legend>Payment Information</legend>\n  <label>Card: <input type=\"text\"></label>\n  <label>CVV: <input type=\"password\"></label>\n  <output for=\"card cvv\" id=\"status\">\n    Form disabled\n  </output>\n</fieldset>",
+            "annotation": "Grouped form controls with output",
+            "highlight_lines": [
+                1,
+                5,
+                6
+            ],
+            "explanation": "Fieldset groups related controls and can disable them collectively. Output element displays calculation results or form status updates."
+        },
+        {
+            "code_string": "<map name=\"locations\">\n  <area shape=\"rect\" coords=\"0,0,100,50\"\n        href=\"/north\" alt=\"North region\">\n  <area shape=\"circle\" coords=\"150,25,20\"\n        href=\"/center\" alt=\"Center point\">\n</map>\n<img src=\"map.png\" usemap=\"#locations\">",
+            "annotation": "Interactive image map with regions",
+            "highlight_lines": [
+                2,
+                4,
+                7
+            ],
+            "explanation": "Image maps create clickable regions on images. Different shapes define hotspots. Usemap attribute links image to map definition."
+        },
+        {
+            "code_string": "<meter value=\"6\" min=\"0\" max=\"10\"\n       low=\"3\" high=\"7\" optimum=\"8\">\n  6 out of 10\n</meter>\n<progress value=\"70\" max=\"100\">\n  70% complete\n</progress>",
+            "annotation": "Visual progress and measurement indicators",
+            "highlight_lines": [
+                1,
+                2,
+                5
+            ],
+            "explanation": "Meter shows scalar values within ranges with optimal zones. Progress displays completion percentage for ongoing tasks or processes."
+        }
+    ],
+    "outro": "You've mastered advanced HTML techniques!"
+}

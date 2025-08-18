@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programming Thumbnail Maker</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .thumbnail-container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #ff6ec4, #7873f5);
+      position: relative;
+    }
+    .text-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+    .text-box {
+      padding: 20px 40px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 16px;
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      text-shadow: 0 0 10px white;
+      cursor: pointer;
+    }
+    .sub-text-box {
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
+      font-size: 26px;
+      font-weight: normal;
+      text-align: center;
+      color: #eee;
+      text-shadow: 0 0 8px #eee;
+      cursor: pointer;
+    }
+    button, input[type="color"] {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Programming Thumbnail Maker</h1>
+  <div class="controls">
+    <input type="color" id="color1" value="#ff6ec4" />
+    <input type="color" id="color2" value="#7873f5" />
+    <input type="color" id="color3" value="#a2facf" />
+    <input type="text" id="titleText" value="nextjs vs laravel" />
+    <input type="text" id="subText" value="A detailed comparison" />
+    <button onclick="downloadImage()">Download Thumbnail</button>
+  </div>
+
+  <div class="thumbnail-container">
+    <div class="thumbnail" id="thumbnail">
+        <div class="text-container">
+            <div class="text-box" contenteditable="true" id="thumbnailText">nextjs vs laravel</div>
+            <div class="sub-text-box" contenteditable="true" id="thumbnailSubText">A detailed comparison</div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    const thumbnail = document.getElementById('thumbnail');
+    const titleInput = document.getElementById('titleText');
+    const subTitleInput = document.getElementById('subText');
+    const thumbnailText = document.getElementById('thumbnailText');
+    const thumbnailSubText = document.getElementById('thumbnailSubText');
+    const c1 = document.getElementById('color1');
+    const c2 = document.getElementById('color2');
+    const c3 = document.getElementById('color3');
+
+    function updateGradient() {
+      thumbnail.style.background = `radial-gradient(circle at center, ${c1.value}, ${c2.value}, ${c3.value})`;
+    }
+
+    function updateText() {
+      thumbnailText.textContent = titleInput.value;
+    }
+
+    function updateSubText() {
+      thumbnailSubText.textContent = subTitleInput.value;
+    }
+
+    c1.addEventListener('input', updateGradient);
+    c2.addEventListener('input', updateGradient);
+    c3.addEventListener('input', updateGradient);
+    titleInput.addEventListener('input', updateText);
+    subTitleInput.addEventListener('input', updateSubText);
+
+    function downloadImage() {
+      html2canvas(document.querySelector(".thumbnail-container"), { backgroundColor: null }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `${thumbnailText.textContent}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function applyURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      const t = params.get("text");
+      const st = params.get("subtext");
+      const g1 = params.get("g1");
+      const g2 = params.get("g2");
+      const g3 = params.get("g3");
+      console.log(params);
+      
+      if (t) {
+        titleInput.value = t;
+        thumbnailText.textContent = t;
+      }
+      if (st) {
+        subTitleInput.value = st;
+        thumbnailSubText.textContent = st;
+      }
+      if (g1 && /^#?[0-9A-Fa-f]{6}$/.test(g1)) c1.value = g1.startsWith("#") ? g1 : `#${g1}`;
+      if (g2 && /^#?[0-9A-Fa-f]{6}$/.test(g2)) c2.value = g2.startsWith("#") ? g2 : `#${g2}`;
+      if (g3 && /^#?[0-9A-Fa-f]{6}$/.test(g3)) c3.value = g3.startsWith("#") ? g3 : `#${g3}`;
+      updateGradient();
+    }
+
+    window.onload = () => {
+      applyURLParams();
+      if (location.search.includes("auto=true")) {
+        setTimeout(downloadImage, 1000); // delay to allow rendering
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+    "intro": "Let's explore TensorFlow fundamentals together!",
+    "sections": [
+        {
+            "code_string": "import tensorflow as tf\n\n# Create constant tensors\na = tf.constant([1, 2, 3])\nb = tf.constant([4, 5, 6])\n\nprint(f\"Tensor a: {a}\")\nprint(f\"Tensor b: {b}\")",
+            "annotation": "Creating basic constant tensors",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "Constants are immutable tensors with fixed values. We create two 1D tensors containing integers and display them using print statements."
+        },
+        {
+            "code_string": "# Basic tensor operations\nsum_result = tf.add(a, b)\nproduct = tf.multiply(a, b)\n\nprint(f\"Sum: {sum_result}\")\nprint(f\"Product: {product}\")",
+            "annotation": "Performing element-wise tensor operations",
+            "highlight_lines": [
+                2,
+                3
+            ],
+            "explanation": "TensorFlow provides mathematical functions for tensors. Element-wise addition and multiplication create new tensors with computed values at each position."
+        },
+        {
+            "code_string": "# Create variables for training\nweight = tf.Variable(2.0)\nbias = tf.Variable(0.5)\n\n# Simple linear function\nx = tf.constant(3.0)\ny = weight * x + bias\nprint(f\"Result: {y}\")",
+            "annotation": "Using variables for trainable parameters",
+            "highlight_lines": [
+                2,
+                3,
+                7
+            ],
+            "explanation": "Variables are mutable tensors used for model parameters. They can be updated during training, unlike constants which remain fixed throughout execution."
+        },
+        {
+            "code_string": "# Gradient computation\nwith tf.GradientTape() as tape:\n    loss = (y - 5.0) ** 2\n\ngrad = tape.gradient(loss, weight)\nprint(f\"Gradient: {grad}\")",
+            "annotation": "Computing gradients for optimization",
+            "highlight_lines": [
+                1,
+                2,
+                5
+            ],
+            "explanation": "GradientTape records operations for automatic differentiation. It computes gradients of loss functions with respect to variables for optimization algorithms."
+        }
+    ],
+    "outro": "Great job learning TensorFlow basics!"
+}

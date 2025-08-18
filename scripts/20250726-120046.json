@@ -1,0 +1,43 @@
+{
+    "intro": "Let's get TensorFlow installed and running!",
+    "outro": "Perfect! Your TensorFlow environment is ready!",
+    "sections": [
+        {
+            "annotation": "Installing and checking TensorFlow version",
+            "code_string": "# Install TensorFlow\n# pip install tensorflow\n\nimport tensorflow as tf\nprint(f\"TensorFlow version: {tf.__version__}\")\nprint(f\"GPU available: {tf.config.list_physical_devices('GPU')}\")",
+            "explanation": "First install TensorFlow via pip, then verify installation by checking version and GPU availability for optimal performance.",
+            "highlight_lines": [
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "Verifying system compatibility and testing",
+            "code_string": "# Check system configuration\nprint(f\"Python version compatible: {tf.sysconfig.get_build_info()}\")\nprint(f\"Built with CUDA: {tf.test.is_built_with_cuda()}\")\n\n# Test basic functionality\nhello = tf.constant('Hello TensorFlow!')\nprint(hello.numpy().decode())",
+            "explanation": "Check if TensorFlow is properly configured with your system. Test basic functionality by creating a string constant tensor.",
+            "highlight_lines": [
+                2,
+                3,
+                6
+            ]
+        },
+        {
+            "annotation": "Configuring GPU memory settings",
+            "code_string": "# Memory growth configuration\ngpus = tf.config.experimental.list_physical_devices('GPU')\nif gpus:\n    tf.config.experimental.set_memory_growth(gpus[0], True)\n    print(\"GPU memory growth enabled\")\nelse:\n    print(\"Running on CPU\")",
+            "explanation": "Enable GPU memory growth to prevent TensorFlow from allocating all GPU memory at once, allowing better resource management.",
+            "highlight_lines": [
+                3,
+                4
+            ]
+        },
+        {
+            "annotation": "Enabling mixed precision for better performance",
+            "code_string": "# Enable mixed precision for performance\npolicy = tf.keras.mixed_precision.Policy('mixed_float16')\ntf.keras.mixed_precision.set_global_policy(policy)\n\nprint(f\"Mixed precision policy: {policy}\")\nprint(\"Setup complete - ready for TensorFlow!\")",
+            "explanation": "Mixed precision uses both float16 and float32 data types to speed up training while maintaining model accuracy on compatible hardware.",
+            "highlight_lines": [
+                2,
+                3
+            ]
+        }
+    ]
+}

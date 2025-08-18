@@ -1,0 +1,54 @@
+{
+    "intro": "Master form automation and dropdown handling!",
+    "outro": "Great! You've mastered form automation techniques!",
+    "sections": [
+        {
+            "annotation": "Setting up for form automation",
+            "code_string": "from selenium import webdriver\nfrom selenium.webdriver.support.ui import Select\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.common.keys import Keys\n\ndriver = webdriver.Chrome()\ndriver.get(\"https://example.com/form\")\n\nprint(\"Form page loaded successfully!\")",
+            "explanation": "Select class handles dropdown menus. Keys provides keyboard shortcuts. Navigate to form page for demonstrations.",
+            "highlight_lines": [
+                2,
+                4,
+                6,
+                7
+            ]
+        },
+        {
+            "annotation": "Working with text inputs and areas",
+            "code_string": "# Handle text inputs and text areas\nname_field = driver.find_element(By.NAME, \"username\")\nname_field.clear()\nname_field.send_keys(\"John Doe\")\n\n# Handle text area\ncomments = driver.find_element(By.ID, \"comments\")\ncomments.send_keys(\"This is a test comment\")",
+            "explanation": "clear() removes existing text first. send_keys types into input fields. Text areas work like regular inputs.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Managing dropdown menu selections",
+            "code_string": "# Handle dropdown selections\ncountry_dropdown = Select(driver.find_element(By.ID, \"country\"))\ncountry_dropdown.select_by_visible_text(\"United States\")\ncountry_dropdown.select_by_value(\"us\")\ncountry_dropdown.select_by_index(1)\n\nselected = country_dropdown.first_selected_option\nprint(f\"Selected country: {selected.text}\")",
+            "explanation": "Select wrapper handles dropdown operations. Multiple selection methods available. first_selected_option gets current choice.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Working with checkboxes and radio buttons",
+            "code_string": "# Handle checkboxes and radio buttons\ncheckbox = driver.find_element(By.ID, \"newsletter\")\nif not checkbox.is_selected():\n    checkbox.click()\n\nradio = driver.find_element(By.NAME, \"gender\")\nradio.click()\n\nprint(\"Form filled completely!\")\ndriver.quit()",
+            "explanation": "is_selected() checks current state. Click toggles checkboxes. Radio buttons select single options from groups.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                6,
+                7
+            ]
+        }
+    ]
+}

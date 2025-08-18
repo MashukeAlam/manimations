@@ -1,0 +1,42 @@
+{
+  "intro": "Master Go's explicit error handling patterns for building reliable and maintainable applications",
+  "sections": [
+    {
+      "code_string": "import (\n    \"errors\"\n    \"fmt\"\n    \"strconv\"\n)\n\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, errors.New(\"division by zero\")\n    }\n    return a / b, nil\n}",
+      "annotation": "Basic error creation and return",
+      "highlight_lines": [7, 8, 9, 11],
+      "explanation": "Functions return error as last parameter by convention. Use errors.New() to create simple error messages. Return nil for success cases. This explicit approach makes error handling visible and mandatory."
+    },
+    {
+      "code_string": "result, err := divide(10, 0)\nif err != nil {\n    fmt.Printf(\"Error: %v\\n\", err)\n    return\n}\nfmt.Printf(\"Result: %.2f\\n\", result)\n\n// Successful case\nresult2, err2 := divide(10, 2)\nif err2 != nil {\n    fmt.Printf(\"Error: %v\\n\", err2)\n    return\n}\nfmt.Printf(\"Result: %.2f\\n\", result2)",
+      "annotation": "Error checking and handling patterns",
+      "highlight_lines": [1, 2, 3, 4, 9, 10, 11],
+      "explanation": "Always check error before using result value. Use early return pattern to handle errors immediately. This prevents cascading failures and makes code flow clear and predictable."
+    },
+    {
+      "code_string": "import \"fmt\"\n\ntype ValidationError struct {\n    Field   string\n    Value   interface{}\n    Message string\n}\n\nfunc (e ValidationError) Error() string {\n    return fmt.Sprintf(\"validation failed for %s: %s (got %v)\", \n        e.Field, e.Message, e.Value)\n}",
+      "annotation": "Custom error types with context",
+      "highlight_lines": [3, 4, 5, 6, 9, 10, 11],
+      "explanation": "Implement Error() method to create custom error types. Include relevant context like field names and values. Custom errors provide structured information for better debugging and error handling."
+    },
+    {
+      "code_string": "func validateAge(age int) error {\n    if age < 0 {\n        return ValidationError{\n            Field:   \"age\",\n            Value:   age,\n            Message: \"must be non-negative\",\n        }\n    }\n    if age > 150 {\n        return ValidationError{\n            Field:   \"age\",\n            Value:   age,\n            Message: \"must be realistic\",\n        }\n    }\n    return nil\n}",
+      "annotation": "Using custom errors in validation",
+      "highlight_lines": [2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 16],
+      "explanation": "Return custom errors with specific validation context. Provide detailed information about what went wrong and why. Multiple validation conditions can return different error instances with relevant details."
+    },
+    {
+      "code_string": "func parseAndValidate(input string) (int, error) {\n    age, err := strconv.Atoi(input)\n    if err != nil {\n        return 0, fmt.Errorf(\"failed to parse age '%s': %w\", input, err)\n    }\n    \n    if err := validateAge(age); err != nil {\n        return 0, fmt.Errorf(\"age validation failed: %w\", err)\n    }\n    \n    return age, nil\n}",
+      "annotation": "Error wrapping and chaining",
+      "highlight_lines": [2, 3, 4, 7, 8, 11],
+      "explanation": "Wrap errors with additional context using fmt.Errorf and %w verb. Chain errors to preserve original error information. This creates error trails that help with debugging complex call stacks."
+    },
+    {
+      "code_string": "import \"errors\"\n\nage, err := parseAndValidate(\"-5\")\nif err != nil {\n    var validationErr ValidationError\n    if errors.As(err, &validationErr) {\n        fmt.Printf(\"Validation error for %s: %s\\n\", \n            validationErr.Field, validationErr.Message)\n    } else {\n        fmt.Printf(\"Other error: %v\\n\", err)\n    }\n    return\n}\nfmt.Printf(\"Valid age: %d\\n\", age)",
+      "annotation": "Error type checking and unwrapping",
+      "highlight_lines": [3, 4, 5, 6, 7, 8, 9, 10, 14],
+      "explanation": "Use errors.As() to check if wrapped error contains specific type. Extract custom error for specialized handling. This allows different error handling strategies based on error type and context."
+    }
+  ],
+  "outro": "You've learned Go's powerful error handling patterns for building robust, production-ready applications!"
+}

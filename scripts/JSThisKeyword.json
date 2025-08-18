@@ -1,0 +1,136 @@
+{
+    "intro": "JavaScript's 'this' keyword changes depending on context!",
+    "outro": "Master 'this' and JavaScript context makes sense!",
+    "sections": [
+        {
+            "type": "code",
+            "code_string": "// Global context - 'this' is window\nconsole.log(this); // Window object\nfunction globalFunction() {\n    console.log('Global this:', this);\n}\nglobalFunction(); // Also Window",
+            "annotation": "Global 'this' refers to window object",
+            "highlight_lines": [
+                2,
+                4
+            ],
+            "explanation": "In global scope, 'this' defaults to window"
+        },
+        {
+            "type": "quiz",
+            "question": "What does 'this' refer to globally?",
+            "answer": "The window object in browsers"
+        },
+        {
+            "type": "code",
+            "code_string": "const person = {\n    name: 'Alice',\n    greet() {\n        console.log('Hello, I am ' + this.name);\n    }\n};\nperson.greet(); // 'Hello, I am Alice'",
+            "annotation": "Object method 'this' refers to object",
+            "highlight_lines": [
+                4
+            ],
+            "explanation": "Inside object methods, 'this' is the object"
+        },
+        {
+            "type": "code",
+            "code_string": "const person = { name: 'Alice', greet() { console.log(this.name); } };\nconst greetFunc = person.greet;\ngreetFunc(); // undefined!\n// Lost context when assigned to variable",
+            "annotation": "Lost context when method becomes function",
+            "highlight_lines": [
+                2,
+                3
+            ],
+            "explanation": "Assigning method loses original 'this' binding"
+        },
+        {
+            "type": "quiz",
+            "question": "Why does extracted method lose 'this'?",
+            "answer": "Context depends on how function called"
+        },
+        {
+            "type": "code",
+            "code_string": "const obj = { name: 'Bob' };\nfunction sayName() {\n    console.log('Name:', this.name);\n}\nsayName.call(obj); // 'Name: Bob'\nsayName.apply(obj); // 'Name: Bob'",
+            "annotation": "call() and apply() explicitly set 'this'",
+            "highlight_lines": [
+                5,
+                6
+            ],
+            "explanation": "call/apply methods force specific 'this' context"
+        },
+        {
+            "type": "code",
+            "code_string": "const obj = { name: 'Carol' };\nfunction sayName() {\n    console.log('Bound name:', this.name);\n}\nconst boundFunction = sayName.bind(obj);\nboundFunction(); // 'Bound name: Carol'",
+            "annotation": "bind() creates permanently bound function",
+            "highlight_lines": [
+                5,
+                6
+            ],
+            "explanation": "bind() returns function with fixed 'this' value"
+        },
+        {
+            "type": "quiz",
+            "question": "What's difference between call and bind?",
+            "answer": "call executes immediately, bind returns function"
+        },
+        {
+            "type": "code",
+            "code_string": "const obj = {\n    name: 'Dave',\n    regularFunction() { console.log(this.name); },\n    arrowFunction: () => { console.log(this.name); }\n};\nobj.regularFunction(); // 'Dave'\nobj.arrowFunction(); // undefined",
+            "annotation": "Arrow functions inherit parent scope 'this'",
+            "highlight_lines": [
+                3,
+                4,
+                6,
+                7
+            ],
+            "explanation": "Arrow functions don't have their own 'this'"
+        },
+        {
+            "type": "code",
+            "code_string": "function Constructor(name) {\n    this.name = name;\n    this.greet = function() {\n        console.log('Hi, ' + this.name);\n    };\n}\nconst instance = new Constructor('Eve');\ninstance.greet(); // 'Hi, Eve'",
+            "annotation": "Constructor functions create new 'this' context",
+            "highlight_lines": [
+                2,
+                7,
+                8
+            ],
+            "explanation": "new keyword creates fresh object as 'this'"
+        },
+        {
+            "type": "quiz",
+            "question": "How does 'new' affect 'this' binding?",
+            "answer": "Creates new object and binds it"
+        },
+        {
+            "type": "code",
+            "code_string": "class Person {\n    constructor(name) { this.name = name; }\n    greet() { console.log(`Hello ${this.name}`); }\n    arrowGreet = () => { console.log(`Arrow ${this.name}`); }\n}\nconst p = new Person('Frank');\np.greet(); // Works fine",
+            "annotation": "Class methods behave like object methods",
+            "highlight_lines": [
+                3,
+                4,
+                7
+            ],
+            "explanation": "Classes follow same 'this' rules as objects"
+        },
+        {
+            "type": "code",
+            "code_string": "const button = document.createElement('button');\nconst handler = {\n    message: 'Clicked!',\n    handleClick() { console.log(this.message); }\n};\nbutton.onclick = handler.handleClick; // undefined!\nbutton.onclick = handler.handleClick.bind(handler);",
+            "annotation": "Event handlers need explicit binding",
+            "highlight_lines": [
+                6,
+                7
+            ],
+            "explanation": "DOM events change 'this' to element"
+        },
+        {
+            "type": "quiz",
+            "question": "Why bind event handlers in objects?",
+            "answer": "Events set 'this' to DOM element"
+        },
+        {
+            "type": "code",
+            "code_string": "// Four rules for 'this' binding:\n// 1. new binding: new Func() -> new object\n// 2. Explicit: call/apply/bind -> specified\n// 3. Implicit: obj.method() -> obj\n// 4. Default: standalone -> window/undefined",
+            "annotation": "Four rules determine 'this' value",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Priority order: new > explicit > implicit > default"
+        }
+    ]
+}

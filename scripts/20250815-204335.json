@@ -1,0 +1,132 @@
+{
+    "intro": "Build neural networks from scratch today!",
+    "sections": [
+        {
+            "code_string": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom typing import Tuple, List\n\n# Set random seed for reproducibility\nnp.random.seed(42)",
+            "annotation": "Essential imports and setup configuration",
+            "highlight_lines": [
+                1,
+                2,
+                6
+            ],
+            "explanation": "NumPy handles matrix operations efficiently. Matplotlib visualizes data and results. Setting random seed ensures reproducible results across runs."
+        },
+        {
+            "code_string": "def sigmoid(x: np.ndarray) -> np.ndarray:\n    \"\"\"Sigmoid activation function\"\"\"\n    return 1 / (1 + np.exp(-np.clip(x, -250, 250)))\n\ndef sigmoid_derivative(x: np.ndarray) -> np.ndarray:\n    \"\"\"Derivative of sigmoid function\"\"\"\n    s = sigmoid(x)\n    return s * (1 - s)",
+            "annotation": "Core activation functions for neurons",
+            "highlight_lines": [
+                1,
+                3,
+                6,
+                7
+            ],
+            "explanation": "Sigmoid maps any real number to (0,1) range. Clipping prevents overflow errors. The derivative is crucial for backpropagation learning algorithm."
+        },
+        {
+            "code_string": "def create_dataset(n_samples: int = 100) -> Tuple[np.ndarray, np.ndarray]:\n    \"\"\"Generate XOR dataset for testing\"\"\"\n    X = np.random.randint(0, 2, (n_samples, 2)).astype(float)\n    y = (X[:, 0] ^ X[:, 1]).reshape(-1, 1).astype(float)\n    return X, y",
+            "annotation": "XOR dataset generation for training",
+            "highlight_lines": [
+                3,
+                4
+            ],
+            "explanation": "XOR is non-linearly separable, requiring hidden layers. We generate random binary inputs and compute XOR outputs for supervised learning."
+        },
+        {
+            "code_string": "class Neuron:\n    def __init__(self, n_inputs: int):\n        # Initialize weights randomly\n        self.weights = np.random.normal(0, 0.5, n_inputs)\n        self.bias = np.random.normal(0, 0.5)\n        \n    def forward(self, inputs: np.ndarray) -> float:\n        # Calculate weighted sum + bias\n        z = np.dot(inputs, self.weights) + self.bias\n        return sigmoid(z)",
+            "annotation": "Single neuron implementation with weights",
+            "highlight_lines": [
+                4,
+                5,
+                8,
+                9
+            ],
+            "explanation": "Each neuron has weights for inputs and a bias term. Forward pass computes weighted sum plus bias, then applies sigmoid activation."
+        },
+        {
+            "code_string": "# Create a single neuron with 2 inputs\nneuron = Neuron(2)\nX, y = create_dataset(4)\n\n# Test forward pass\nfor i in range(4):\n    output = neuron.forward(X[i])\n    print(f\"Input: {X[i]}, Output: {output:.3f}\")",
+            "annotation": "Testing single neuron on data",
+            "highlight_lines": [
+                2,
+                7,
+                8
+            ],
+            "explanation": "We create a neuron for 2-input XOR problem. Testing forward pass shows how neuron processes each input pattern."
+        },
+        {
+            "code_string": "def plot_decision_boundary(neuron, X, y):\n    \"\"\"Visualize what the neuron learned\"\"\"\n    h = 0.01\n    x_min, x_max = -0.5, 1.5\n    y_min, y_max = -0.5, 1.5\n    \n    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),\n                         np.arange(y_min, y_max, h))",
+            "annotation": "Decision boundary visualization setup",
+            "highlight_lines": [
+                3,
+                4,
+                7,
+                8
+            ],
+            "explanation": "Creates a grid of points to evaluate neuron's output. This visualizes the decision boundary the neuron learns to separate classes."
+        },
+        {
+            "code_string": "class Layer:\n    def __init__(self, n_neurons: int, n_inputs: int):\n        self.neurons = [Neuron(n_inputs) for _ in range(n_neurons)]\n        self.n_neurons = n_neurons\n        \n    def forward(self, inputs: np.ndarray) -> np.ndarray:\n        outputs = []\n        for neuron in self.neurons:\n            outputs.append(neuron.forward(inputs))\n        return np.array(outputs)",
+            "annotation": "Layer of multiple neurons together",
+            "highlight_lines": [
+                3,
+                6,
+                8,
+                9
+            ],
+            "explanation": "A layer contains multiple neurons processing the same input. Each neuron produces one output, creating a vector of activations."
+        },
+        {
+            "code_string": "def mean_squared_error(y_true: np.ndarray, y_pred: np.ndarray) -> float:\n    \"\"\"Calculate prediction error\"\"\"\n    return np.mean((y_true - y_pred) ** 2)\n\ndef binary_accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:\n    \"\"\"Calculate classification accuracy\"\"\"\n    predictions = (y_pred > 0.5).astype(int)\n    return np.mean(predictions == y_true)",
+            "annotation": "Loss functions for training evaluation",
+            "highlight_lines": [
+                3,
+                7,
+                8
+            ],
+            "explanation": "MSE measures how far predictions are from true values. Binary accuracy counts correct classifications using 0.5 threshold for sigmoid outputs."
+        },
+        {
+            "code_string": "# Test layer functionality\nlayer = Layer(3, 2)  # 3 neurons, 2 inputs each\nX, y = create_dataset(4)\n\nfor i in range(4):\n    output = layer.forward(X[i])\n    print(f\"Input: {X[i]}, Layer output: {output}\")",
+            "annotation": "Testing layer with multiple neurons",
+            "highlight_lines": [
+                2,
+                6,
+                7
+            ],
+            "explanation": "A layer with 3 neurons processes each input pattern. Each neuron has different weights, producing varied outputs for the same input."
+        },
+        {
+            "code_string": "def initialize_network(layer_sizes: List[int]) -> List[Layer]:\n    \"\"\"Create network with specified architecture\"\"\"\n    layers = []\n    for i in range(1, len(layer_sizes)):\n        n_neurons = layer_sizes[i]\n        n_inputs = layer_sizes[i-1]\n        layers.append(Layer(n_neurons, n_inputs))\n    return layers",
+            "annotation": "Network architecture initialization function",
+            "highlight_lines": [
+                4,
+                5,
+                6,
+                7
+            ],
+            "explanation": "Creates layers based on architecture specification. Each layer's input size matches the previous layer's output size, forming connected network."
+        },
+        {
+            "code_string": "# Create a simple 2-3-1 network\nnetwork = initialize_network([2, 3, 1])\nprint(f\"Network has {len(network)} layers\")\nprint(f\"Hidden layer: {network[0].n_neurons} neurons\")\nprint(f\"Output layer: {network[1].n_neurons} neurons\")",
+            "annotation": "Example network creation and inspection",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "explanation": "Creates network with 2 inputs, 3 hidden neurons, 1 output. This architecture can potentially solve XOR problem with proper training."
+        },
+        {
+            "code_string": "def network_forward(network: List[Layer], inputs: np.ndarray) -> List[np.ndarray]:\n    \"\"\"Forward pass through entire network\"\"\"\n    activations = [inputs]\n    \n    for layer in network:\n        inputs = layer.forward(inputs)\n        activations.append(inputs)\n    \n    return activations",
+            "annotation": "Complete network forward propagation",
+            "highlight_lines": [
+                3,
+                5,
+                6,
+                7
+            ],
+            "explanation": "Passes input through each layer sequentially. Stores all intermediate activations needed later for backpropagation training algorithm."
+        }
+    ],
+    "outro": "You've built the neural network foundation!"
+}

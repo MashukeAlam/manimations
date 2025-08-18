@@ -1,0 +1,30 @@
+{
+  "intro": "Build robust automation with error handling!",
+  "sections": [
+    {
+      "code_string": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.common.exceptions import NoSuchElementException, TimeoutException\nfrom selenium.webdriver.chrome.options import Options\n\n# Configure browser options\nchrome_options = Options()\nchrome_options.add_argument(\"--headless\")\ndriver = webdriver.Chrome(options=chrome_options)",
+      "annotation": "Setting up robust WebDriver configuration",
+      "highlight_lines": [3, 6, 7, 8, 9],
+      "explanation": "Import specific exceptions for handling. Options configure browser behavior. Headless mode runs without GUI."
+    },
+    {
+      "code_string": "# Handle element not found errors\ntry:\n    element = driver.find_element(By.ID, \"missing-element\")\n    element.click()\nexcept NoSuchElementException:\n    print(\"Element not found, using alternative\")\n    alternative = driver.find_element(By.CLASS_NAME, \"backup-button\")\n    alternative.click()",
+      "annotation": "Graceful handling of missing elements",
+      "highlight_lines": [2, 3, 5, 6, 7, 8],
+      "explanation": "Try-except blocks prevent crashes. NoSuchElementException catches missing elements. Provide fallback alternatives for robustness."
+    },
+    {
+      "code_string": "# Handle timeout and stale element errors\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\n\ntry:\n    wait = WebDriverWait(driver, 5)\n    element = wait.until(EC.element_to_be_clickable((By.ID, \"button\")))\nexcept TimeoutException:\n    print(\"Element did not become clickable in time\")",
+      "annotation": "Managing timeouts and wait conditions",
+      "highlight_lines": [5, 6, 7, 8, 9],
+      "explanation": "TimeoutException handles wait failures. Set reasonable timeout values. Gracefully handle slow-loading content scenarios."
+    },
+    {
+      "code_string": "# Cleanup and resource management\ntry:\n    driver.get(\"https://example.com\")\n    # Perform automation tasks here\n    print(\"Automation completed successfully\")\nexcept Exception as e:\n    print(f\"Unexpected error: {e}\")\nfinally:\n    driver.quit()\n    print(\"Browser closed safely\")",
+      "annotation": "Ensuring proper cleanup and resource management",
+      "highlight_lines": [2, 6, 7, 8, 9, 10],
+      "explanation": "Finally block ensures cleanup execution. Catch general exceptions for unexpected errors. Always quit driver to free resources."
+    }
+  ],
+  "outro": "Perfect! You're now building production-ready automation!"
+}

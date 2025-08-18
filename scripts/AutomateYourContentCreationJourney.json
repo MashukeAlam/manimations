@@ -1,0 +1,66 @@
+{
+  "intro": "Unleash the power of automated content creation!",
+  "sections": [
+    {
+      "code_string": "import json\nimport requests\nfrom openai import OpenAI\n\n# Generate video scripts automatically\nclient = OpenAI(api_key=\"your-api-key\")\n\ndef generate_script(topic):\n    prompt = f\"Create a tutorial script about {topic}\"\n    response = client.chat.completions.create(\n        model=\"gpt-4\", messages=[{\"role\": \"user\", \"content\": prompt}]\n    )\n    return response.choices[0].message.content",
+      "annotation": "AI-powered script generation for any topic",
+      "highlight_lines": [6, 8, 9, 10, 11],
+      "explanation": "OpenAI API generates educational scripts automatically. Dynamic prompts create topic-specific content. Endless video ideas from single function call."
+    },
+    {
+      "code_string": "import os\nfrom moviepy.editor import *\nfrom gtts import gTTS\n\ndef create_voiceover(text, filename):\n    # Generate speech from text\n    tts = gTTS(text=text, lang='en', slow=False)\n    tts.save(f\"{filename}.mp3\")\n    \n    # Create video with voiceover\n    audio = AudioFileClip(f\"{filename}.mp3\")\n    return audio",
+      "annotation": "Text-to-speech automation for video narration",
+      "highlight_lines": [5, 6, 7, 10, 11],
+      "explanation": "gTTS converts text to natural speech. MoviePy handles audio processing. Automatically generate voiceovers for any script content."
+    },
+    {
+      "code_string": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\nimport time\n\ndef scrape_trending_topics():\n    driver = webdriver.Chrome()\n    driver.get(\"https://trends.google.com\")\n    \n    # Extract trending topics\n    topics = driver.find_elements(By.CLASS_NAME, \"trending-topic\")\n    trending_list = [topic.text for topic in topics[:5]]\n    \n    driver.quit()\n    return trending_list",
+      "annotation": "Scraping trending topics for content ideas",
+      "highlight_lines": [5, 6, 9, 10, 13],
+      "explanation": "Selenium automates trend discovery from Google. Extract hot topics automatically. Never run out of relevant content ideas."
+    },
+    {
+      "code_string": "import schedule\nimport time\nfrom datetime import datetime\n\ndef automated_content_pipeline():\n    topic = scrape_trending_topics()[0]\n    script = generate_script(topic)\n    audio = create_voiceover(script, f\"video_{datetime.now().strftime('%Y%m%d')}\")\n    print(f\"Content created for: {topic}\")\n\n# Schedule daily content creation\nschedule.every().day.at(\"09:00\").do(automated_content_pipeline)\nwhile True:\n    schedule.run_pending()\n    time.sleep(3600)",
+      "annotation": "Complete automated content creation pipeline",
+      "highlight_lines": [5, 6, 7, 8, 12, 13, 14],
+      "explanation": "Schedule library automates daily workflows. Combines all functions into pipeline. Creates content while you sleep automatically."
+    },
+    {
+      "code_string": "import pandas as pd\nfrom youtube_transcript_api import YouTubeTranscriptApi\n\ndef analyze_competitor_content(video_ids):\n    insights = []\n    for video_id in video_ids:\n        transcript = YouTubeTranscriptApi.get_transcript(video_id)\n        text = ' '.join([item['text'] for item in transcript])\n        \n        # Analyze content patterns\n        word_count = len(text.split())\n        insights.append({\"video_id\": video_id, \"length\": word_count})\n    \n    return pd.DataFrame(insights)",
+      "annotation": "Competitor analysis for content optimization",
+      "highlight_lines": [5, 6, 7, 8, 11, 12, 14],
+      "explanation": "YouTube API extracts competitor transcripts automatically. Analyze successful content patterns. Data-driven content strategy decisions."
+    },
+    {
+      "code_string": "from PIL import Image, ImageDraw, ImageFont\nimport random\n\ndef generate_thumbnail(title, template_path):\n    # Load template and add dynamic text\n    img = Image.open(template_path)\n    draw = ImageDraw.Draw(img)\n    font = ImageFont.truetype(\"arial.ttf\", 60)\n    \n    # Random color scheme\n    colors = [\"#FF6B6B\", \"#4ECDC4\", \"#45B7D1\", \"#96CEB4\"]\n    text_color = random.choice(colors)\n    \n    draw.text((50, 100), title, fill=text_color, font=font)\n    img.save(f\"thumbnail_{title[:10]}.png\")\n    return f\"thumbnail_{title[:10]}.png\"",
+      "annotation": "Automated thumbnail generation with dynamic styling",
+      "highlight_lines": [5, 6, 7, 11, 12, 14, 15],
+      "explanation": "PIL creates custom thumbnails programmatically. Random colors keep content fresh. Consistent branding with dynamic elements."
+    },
+    {
+      "code_string": "import tweepy\nimport instagram_basic_display\nfrom facebook import GraphAPI\n\ndef cross_platform_posting(content, platforms):\n    if \"twitter\" in platforms:\n        twitter_api = tweepy.Client(bearer_token=\"your-token\")\n        twitter_api.create_tweet(text=content[\"title\"])\n    \n    if \"instagram\" in platforms:\n        # Instagram posting logic\n        print(f\"Posted to Instagram: {content['title']}\")\n    \n    if \"facebook\" in platforms:\n        fb_api = GraphAPI(access_token=\"your-token\")\n        fb_api.put_object(\"me\", \"feed\", message=content[\"description\"])",
+      "annotation": "Multi-platform content distribution automation",
+      "highlight_lines": [6, 7, 8, 11, 15, 16],
+      "explanation": "Social media APIs enable cross-platform posting. Single content reaches multiple audiences. Maximize reach with minimal effort."
+    },
+    {
+      "code_string": "import sqlite3\nfrom datetime import datetime, timedelta\n\ndef track_content_performance():\n    conn = sqlite3.connect('content_analytics.db')\n    \n    # Create performance tracking table\n    conn.execute('''\n        CREATE TABLE IF NOT EXISTS videos (\n            id INTEGER PRIMARY KEY,\n            title TEXT,\n            views INTEGER,\n            engagement REAL,\n            created_date TEXT\n        )\n    ''')\n    \n    # Analyze best performing content\n    top_content = conn.execute(\n        'SELECT title, views FROM videos ORDER BY views DESC LIMIT 5'\n    ).fetchall()\n    \n    conn.close()\n    return top_content",
+      "annotation": "Performance tracking and analytics automation",
+      "highlight_lines": [5, 8, 9, 10, 11, 12, 13, 19, 20],
+      "explanation": "SQLite database stores performance metrics automatically. Track what content works best. Data-driven decisions for future content."
+    },
+    {
+      "code_string": "import requests\nfrom bs4 import BeautifulSoup\nimport feedparser\n\ndef content_research_automation():\n    # Scrape industry news\n    news_urls = [\"https://techcrunch.com\", \"https://wired.com\"]\n    articles = []\n    \n    for url in news_urls:\n        response = requests.get(url)\n        soup = BeautifulSoup(response.content, 'html.parser')\n        headlines = soup.find_all('h2', class_='headline')[:3]\n        articles.extend([h.text.strip() for h in headlines])\n    \n    # Monitor RSS feeds for inspiration\n    feed = feedparser.parse(\"https://feeds.feedburner.com/oreilly\")\n    latest_topics = [entry.title for entry in feed.entries[:5]]\n    \n    return {\"news\": articles, \"topics\": latest_topics}",
+      "annotation": "Automated research and inspiration gathering",
+      "highlight_lines": [6, 7, 10, 11, 12, 13, 17, 18, 20],
+      "explanation": "BeautifulSoup scrapes news sites automatically. RSS feeds provide constant inspiration. Never run out of content ideas."
+    },
+    {
+      "code_string": "from apscheduler.schedulers.blocking import BlockingScheduler\nimport json\n\ndef master_automation_controller():\n    scheduler = BlockingScheduler()\n    \n    # Daily content creation at 8 AM\n    scheduler.add_job(automated_content_pipeline, 'cron', hour=8)\n    \n    # Research new topics every 4 hours\n    scheduler.add_job(content_research_automation, 'interval', hours=4)\n    \n    # Weekly performance analysis\n    scheduler.add_job(track_content_performance, 'cron', day_of_week='mon')\n    \n    # Social media posting schedule\n    scheduler.add_job(cross_platform_posting, 'cron', hour=12, minute=30)\n    \n    print(\"🚀 Content automation system activated!\")\n    scheduler.start()",
+      "annotation": "Master automation system orchestration",
+      "highlight_lines": [4, 5, 8, 11, 14, 17, 19, 20],
+      "explanation": "APScheduler orchestrates entire automation workflow. Multiple jobs run at optimal times. Complete hands-off content creation system."
+    }
+  ],
+  "outro": "You're now a content automation wizard! Scale your creativity infinitely!"
+}

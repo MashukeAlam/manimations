@@ -1,0 +1,49 @@
+{
+    "intro": "Building powerful CNNs for image recognition!",
+    "outro": "Fantastic! You've mastered CNNs for images!",
+    "sections": [
+        {
+            "annotation": "Loading CIFAR-10 color image dataset",
+            "code_string": "import tensorflow as tf\nfrom tensorflow import keras\n\n# Load and prepare CIFAR-10 data\n(x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()\n\nx_train = x_train.astype('float32') / 255.0\nx_test = x_test.astype('float32') / 255.0\nprint(f\"CIFAR-10 shape: {x_train.shape}\")",
+            "explanation": "CIFAR-10 contains 32x32 color images in 10 classes. Unlike MNIST, these are RGB images with 3 color channels.",
+            "highlight_lines": [
+                5,
+                7,
+                8
+            ]
+        },
+        {
+            "annotation": "Creating convolutional layers for feature extraction",
+            "code_string": "# Build CNN model\nmodel = keras.Sequential([\n    keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(32,32,3)),\n    keras.layers.MaxPooling2D((2,2)),\n    keras.layers.Conv2D(64, (3,3), activation='relu'),\n    keras.layers.MaxPooling2D((2,2)),\n    keras.layers.Flatten()\n])",
+            "explanation": "Conv2D layers detect features using filters. MaxPooling reduces spatial dimensions. Flatten converts 2D feature maps to 1D.",
+            "highlight_lines": [
+                3,
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "annotation": "Adding dense layers for final classification",
+            "code_string": "# Add classification layers\nmodel.add(keras.layers.Dense(64, activation='relu'))\nmodel.add(keras.layers.Dropout(0.5))\nmodel.add(keras.layers.Dense(10, activation='softmax'))\n\nmodel.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])\nmodel.summary()",
+            "explanation": "Dense layers after convolution perform classification. Dropout prevents overfitting. 10 outputs for CIFAR-10 classes.",
+            "highlight_lines": [
+                2,
+                3,
+                4,
+                6
+            ]
+        },
+        {
+            "annotation": "Training the convolutional neural network",
+            "code_string": "# Train CNN model\nhistory = model.fit(\n    x_train, y_train,\n    epochs=3,\n    batch_size=32,\n    validation_data=(x_test, y_test)\n)\n\nprint(f\"Final validation accuracy: {max(history.history['val_accuracy']):.4f}\")",
+            "explanation": "CNNs typically need more epochs but we use 3 for demo. Validation data tracks performance on unseen images.",
+            "highlight_lines": [
+                2,
+                6,
+                9
+            ]
+        }
+    ]
+}

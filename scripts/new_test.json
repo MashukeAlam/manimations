@@ -1,0 +1,23 @@
+{
+  "intro": "Let's learn about Python lists with some fun!",
+  "sections": [
+    {
+      "type": "code",
+      "code_string": "my_list = [1, 2, 3]\nprint(my_list)\nmy_list.append(4)\nprint(my_list)",
+      "annotation": "Create and modify a list",
+      "highlight_lines": [1, 3],
+      "explanation": "Shows how to create a list and add an element."
+    },
+    {
+      "type": "quiz",
+      "question": "What does my_list[-1] return after appending 4?",
+      "answer": "It returns 4, the last element."
+    },
+    {
+      "type": "real_world",
+      "description": "Lists are used to store items, like user scores.",
+      "code_string": "scores = [98, 87, 92]\navg = sum(scores) / len(scores)\nprint(f'Average score: {avg}')"
+    }
+  ],
+  "outro": "Great job! Try using lists in your next project."
+}

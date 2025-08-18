@@ -1,0 +1,46 @@
+{
+    "intro": "Let's automate web browsers with Selenium!",
+    "outro": "Awesome! You're now automating web browsers!",
+    "sections": [
+        {
+            "annotation": "Setting up Selenium WebDriver browser automation",
+            "code_string": "from selenium import webdriver\nfrom selenium.webdriver.common.by import By\n\n# Initialize Chrome WebDriver\ndriver = webdriver.Chrome()\ndriver.get(\"https://example.com\")\n\nprint(\"Browser opened successfully!\")",
+            "explanation": "WebDriver controls browsers programmatically. Chrome driver opens browser window. get() method navigates to specified URL.",
+            "highlight_lines": [
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "Locating web elements using different strategies",
+            "code_string": "# Find elements on the page\ntitle_element = driver.find_element(By.TAG_NAME, \"h1\")\nlink_element = driver.find_element(By.LINK_TEXT, \"More information...\")\n\nprint(f\"Page title: {title_element.text}\")\nprint(f\"Link found: {link_element.is_displayed()}\")",
+            "explanation": "find_element locates page elements. By.TAG_NAME finds HTML tags. By.LINK_TEXT finds clickable links. text property gets element content.",
+            "highlight_lines": [
+                2,
+                3,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Interacting with forms and input fields",
+            "code_string": "# Interact with form elements\nsearch_box = driver.find_element(By.NAME, \"search\")\nsearch_box.send_keys(\"Selenium tutorial\")\n\nsubmit_button = driver.find_element(By.ID, \"submit-btn\")\nsubmit_button.click()\n\nprint(\"Form submitted successfully!\")",
+            "explanation": "send_keys types text into input fields. click() simulates button clicks. By.NAME and By.ID locate elements using attributes.",
+            "highlight_lines": [
+                2,
+                3,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Implementing waits and proper browser cleanup",
+            "code_string": "# Wait and cleanup\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\n\nWebDriverWait(driver, 10).until(EC.title_contains(\"Results\"))\nprint(\"Page loaded completely!\")\ndriver.quit()",
+            "explanation": "WebDriverWait handles dynamic content loading. expected_conditions checks page states. quit() closes browser and ends session.",
+            "highlight_lines": [
+                5,
+                7
+            ]
+        }
+    ]
+}

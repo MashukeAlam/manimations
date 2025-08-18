@@ -1,0 +1,47 @@
+{
+    "intro": "Understanding tensor shapes and data types!",
+    "outro": "Great! You now understand tensor fundamentals!",
+    "sections": [
+        {
+            "annotation": "Creating tensors with different dimensions",
+            "code_string": "import tensorflow as tf\n\n# Different tensor shapes\nscalar = tf.constant(42)\nvector = tf.constant([1, 2, 3, 4])\nmatrix = tf.constant([[1, 2], [3, 4]])\n\nprint(f\"Scalar shape: {scalar.shape}\")",
+            "explanation": "Tensors can be 0D (scalar), 1D (vector), 2D (matrix), or higher dimensions. Shape property shows tensor dimensions.",
+            "highlight_lines": [
+                4,
+                5,
+                6
+            ]
+        },
+        {
+            "annotation": "Exploring tensor properties and dimensions",
+            "code_string": "# Tensor properties\nprint(f\"Vector shape: {vector.shape}\")\nprint(f\"Matrix shape: {matrix.shape}\")\nprint(f\"Matrix rank: {tf.rank(matrix)}\")\nprint(f\"Matrix size: {tf.size(matrix)}\")",
+            "explanation": "Shape shows dimensions, rank shows number of dimensions, and size shows total number of elements in the tensor.",
+            "highlight_lines": [
+                1,
+                2,
+                4,
+                5
+            ]
+        },
+        {
+            "annotation": "Working with different tensor data types",
+            "code_string": "# Data types\nfloat_tensor = tf.constant([1.5, 2.7], dtype=tf.float32)\nint_tensor = tf.constant([1, 2], dtype=tf.int32)\nbool_tensor = tf.constant([True, False])\n\nprint(f\"Float dtype: {float_tensor.dtype}\")\nprint(f\"Int dtype: {int_tensor.dtype}\")",
+            "explanation": "TensorFlow supports various data types like float32, int32, bool. Specify dtype parameter to control tensor data type.",
+            "highlight_lines": [
+                2,
+                3,
+                4
+            ]
+        },
+        {
+            "annotation": "Converting types and reshaping tensors",
+            "code_string": "# Type conversion\nconverted = tf.cast(int_tensor, tf.float32)\nreshaped = tf.reshape(vector, [2, 2])\n\nprint(f\"Converted: {converted}\")\nprint(f\"Reshaped: {reshaped}\")\nprint(f\"New shape: {reshaped.shape}\")",
+            "explanation": "Use tf.cast to change data types and tf.reshape to change tensor dimensions while keeping the same number of elements.",
+            "highlight_lines": [
+                2,
+                3,
+                7
+            ]
+        }
+    ]
+}
