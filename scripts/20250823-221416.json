@@ -1,0 +1,120 @@
+{
+    "intro": "Ready to write elegant Python code? List comprehensions will transform your loops into powerful one-liners!",
+    "outro": "Master list comprehensions and write cleaner, faster Python code! Practice makes perfect - happy coding!",
+    "sections": [
+        {
+            "type": "code",
+            "annotation": "Traditional way using loops and append",
+            "code_string": "# Traditional loop approach\nnumbers = []\nfor i in range(5):\n    numbers.append(i * 2)\nprint(numbers)  # [0, 2, 4, 6, 8]",
+            "explanation": "The old way requires multiple lines, creating an empty list, looping, and appending each item. This works but is verbose.",
+            "highlight_lines": [
+                2,
+                3,
+                4
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "List comprehension does the same in one line",
+            "code_string": "# List comprehension - same result!\nnumbers = [i * 2 for i in range(5)]\nprint(numbers)  # [0, 2, 4, 6, 8]",
+            "explanation": "List comprehensions combine loop and append into one elegant line. The syntax is [expression for item in iterable].",
+            "highlight_lines": [
+                2
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Understanding the basic list comprehension syntax",
+            "code_string": "# Basic syntax breakdown\n# [expression for item in iterable]\nwords = ['hello', 'world', 'python']\nuppercase = [word.upper() for word in words]\nprint(uppercase)  # ['HELLO', 'WORLD', 'PYTHON']",
+            "explanation": "The expression (word.upper()) is applied to each item (word) from the iterable (words). Simple and readable!",
+            "highlight_lines": [
+                4
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Adding conditions to filter items",
+            "code_string": "# Adding conditions with if\nnumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\neven_squares = [x**2 for x in numbers if x % 2 == 0]\nprint(even_squares)  # [4, 16, 36, 64, 100]",
+            "explanation": "Add 'if condition' at the end to filter items. Only even numbers are squared here, making the code both concise and clear.",
+            "highlight_lines": [
+                3
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Extracting vowels from a string efficiently",
+            "code_string": "# Working with strings\nsentence = \"Python is awesome\"\nvowels = [char for char in sentence if char.lower() in 'aeiou']\nprint(vowels)  # ['y', 'o', 'i', 'a', 'e', 'o', 'e']",
+            "explanation": "List comprehensions work great with strings. Here we iterate through each character and keep only vowels.",
+            "highlight_lines": [
+                3
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Flattening a matrix with nested loops",
+            "code_string": "# Nested loops in comprehensions\nmatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nflat = [num for row in matrix for num in row]\nprint(flat)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]",
+            "explanation": "Multiple 'for' clauses work like nested loops. Read left to right: for each row, then for each num in that row.",
+            "highlight_lines": [
+                3
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Using if-else within the expression part",
+            "code_string": "# Conditional expressions (ternary operator)\nnumbers = [-2, -1, 0, 1, 2, 3]\nabsolute = [x if x >= 0 else -x for x in numbers]\nprint(absolute)  # [2, 1, 0, 1, 2, 3]",
+            "explanation": "The if-else here is part of the expression, not a filter. It transforms each item based on a condition.",
+            "highlight_lines": [
+                3
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Combining comprehensions with custom functions",
+            "code_string": "# Working with functions\ndef is_prime(n):\n    return n > 1 and all(n % i != 0 for i in range(2, int(n**0.5) + 1))\n\nprimes = [x for x in range(2, 20) if is_prime(x)]\nprint(primes)  # [2, 3, 5, 7, 11, 13, 17, 19]",
+            "explanation": "List comprehensions work beautifully with functions. Here we find all prime numbers using a helper function in the condition.",
+            "highlight_lines": [
+                4
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Dictionary comprehensions work similarly",
+            "code_string": "# Dictionary from lists\nnames = ['Alice', 'Bob', 'Charlie']\nages = [25, 30, 35]\npeople = {name: age for name, age in zip(names, ages)}\nprint(people)  # {'Alice': 25, 'Bob': 30, 'Charlie': 35}",
+            "explanation": "Dictionary comprehensions use {key: value for item in iterable} syntax. Here we zip two lists to create key-value pairs.",
+            "highlight_lines": [
+                4
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Set comprehensions automatically remove duplicates",
+            "code_string": "# Set comprehensions for unique values\ntext = \"hello world\"\nunique_chars = {char.lower() for char in text if char.isalpha()}\nprint(unique_chars)  # {'d', 'e', 'h', 'l', 'o', 'r', 'w'}",
+            "explanation": "Set comprehensions use {} like dict comprehensions but with single expressions. They automatically handle uniqueness.",
+            "highlight_lines": [
+                3
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "Measuring traditional loop performance",
+            "code_string": "# Performance comparison\nimport time\n\n# Traditional loop timing\nstart = time.time()\nresult1 = []\nfor i in range(100000):\n    result1.append(i**2)\nprint(f\"Loop: {time.time() - start:.4f}s\")",
+            "explanation": "Traditional loops require multiple operations: list creation, iteration, and appending. This adds overhead for large datasets.",
+            "highlight_lines": [
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "type": "code",
+            "annotation": "List comprehensions are usually faster",
+            "code_string": "# List comprehension timing\nstart = time.time()\nresult2 = [i**2 for i in range(100000)]\nprint(f\"Comprehension: {time.time() - start:.4f}s\")\n\n# List comprehensions are typically faster!",
+            "explanation": "List comprehensions are optimized at the C level in CPython, making them faster than equivalent loops for most operations.",
+            "highlight_lines": [
+                2,
+                3
+            ]
+        }
+    ]
+}

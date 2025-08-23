@@ -1,6 +1,8 @@
 import os
+import shutil
 
 LOGS_DIR = os.path.join(os.path.dirname(__file__), "logs")
+MEDIA_DIR = os.path.join(os.path.dirname(__file__), "media")
 COMBINED_LOG = os.path.join(LOGS_DIR, "combined_logs.txt")
 
 def get_log_files():
@@ -24,5 +26,26 @@ def append_and_cleanup():
             print(f"Appended and deleted: {log_file}")
     print(f"All new logs appended to {COMBINED_LOG}.")
 
+def cleanup_media_directory():
+    """Deletes all files and subdirectories in the media directory."""
+    print(f"Cleaning up media directory: {MEDIA_DIR}")
+    if not os.path.exists(MEDIA_DIR):
+        print("Media directory not found.")
+        return
+
+    for item in os.listdir(MEDIA_DIR):
+        item_path = os.path.join(MEDIA_DIR, item)
+        try:
+            if os.path.isfile(item_path) or os.path.islink(item_path):
+                os.unlink(item_path)
+                print(f"Deleted file: {item_path}")
+            elif os.path.isdir(item_path):
+                shutil.rmtree(item_path)
+                print(f"Deleted directory: {item_path}")
+        except Exception as e:
+            print(f"Failed to delete {item_path}. Reason: {e}")
+    print("Media directory cleanup complete.")
+
 if __name__ == "__main__":
     append_and_cleanup()
+    cleanup_media_directory()

@@ -1,136 +1,141 @@
 {
-  "intro": "JavaScript's 'this' keyword changes depending on context!",
-  "outro": "Master 'this' and JavaScript context makes sense!",
+  "intro": "Ready to connect your Python code to the world? Let's master API calls with the requests library!",
+  "outro": "You've mastered Python API requests! Now you can connect to any web service. Build amazing applications!",
   "sections": [
     {
       "type": "code",
-      "code_string": "// Global context - 'this' is window\nconsole.log(this); // Window object\nfunction globalFunction() {\n    console.log('Global this:', this);\n}\nglobalFunction(); // Also Window",
-      "annotation": "Global 'this' refers to window object",
+      "annotation": "Making your first GET request",
+      "code_string": "import requests\n\n# Your first API call\nresponse = requests.get('https://httpbin.org/json')\nprint(response.status_code)  # 200\nprint(type(response))  # <class 'requests.models.Response'>",
+      "explanation": "The requests library makes HTTP calls simple. GET requests fetch data from APIs. The Response object contains all the server's reply.",
       "highlight_lines": [
-        2,
-        4
-      ],
-      "explanation": "In global scope, 'this' defaults to window"
-    },
-    {
-      "type": "quiz",
-      "question": "What does 'this' refer to globally?",
-      "answer": "The window object in browsers"
-    },
-    {
-      "type": "code",
-      "code_string": "const person = {\n    name: 'Alice',\n    greet() {\n        console.log('Hello, I am ' + this.name);\n    }\n};\nperson.greet(); // 'Hello, I am Alice'",
-      "annotation": "Object method 'this' refers to object",
-      "highlight_lines": [
-        4
-      ],
-      "explanation": "Inside object methods, 'this' is the object"
-    },
-    {
-      "type": "code",
-      "code_string": "const person = { name: 'Alice', greet() { console.log(this.name); } };\nconst greetFunc = person.greet;\ngreetFunc(); // undefined!\n// Lost context when assigned to variable",
-      "annotation": "Lost context when method becomes function",
-      "highlight_lines": [
-        2,
-        3
-      ],
-      "explanation": "Assigning method loses original 'this' binding"
-    },
-    {
-      "type": "quiz",
-      "question": "Why does extracted method lose 'this'?",
-      "answer": "Context depends on how function called"
-    },
-    {
-      "type": "code",
-      "code_string": "const obj = { name: 'Bob' };\nfunction sayName() {\n    console.log('Name:', this.name);\n}\nsayName.call(obj); // 'Name: Bob'\nsayName.apply(obj); // 'Name: Bob'",
-      "annotation": "call() and apply() explicitly set 'this'",
-      "highlight_lines": [
-        5,
-        6
-      ],
-      "explanation": "call/apply methods force specific 'this' context"
-    },
-    {
-      "type": "code",
-      "code_string": "const obj = { name: 'Carol' };\nfunction sayName() {\n    console.log('Bound name:', this.name);\n}\nconst boundFunction = sayName.bind(obj);\nboundFunction(); // 'Bound name: Carol'",
-      "annotation": "bind() creates permanently bound function",
-      "highlight_lines": [
-        5,
-        6
-      ],
-      "explanation": "bind() returns function with fixed 'this' value"
-    },
-    {
-      "type": "quiz",
-      "question": "What's difference between call and bind?",
-      "answer": "call executes immediately, bind returns function"
-    },
-    {
-      "type": "code",
-      "code_string": "const obj = {\n    name: 'Dave',\n    regularFunction() { console.log(this.name); },\n    arrowFunction: () => { console.log(this.name); }\n};\nobj.regularFunction(); // 'Dave'\nobj.arrowFunction(); // undefined",
-      "annotation": "Arrow functions inherit parent scope 'this'",
-      "highlight_lines": [
-        3,
-        4,
-        6,
-        7
-      ],
-      "explanation": "Arrow functions don't have their own 'this'"
-    },
-    {
-      "type": "code",
-      "code_string": "function Constructor(name) {\n    this.name = name;\n    this.greet = function() {\n        console.log('Hi, ' + this.name);\n    };\n}\nconst instance = new Constructor('Eve');\ninstance.greet(); // 'Hi, Eve'",
-      "annotation": "Constructor functions create new 'this' context",
-      "highlight_lines": [
-        2,
-        7,
-        8
-      ],
-      "explanation": "new keyword creates fresh object as 'this'"
-    },
-    {
-      "type": "quiz",
-      "question": "How does 'new' affect 'this' binding?",
-      "answer": "Creates new object and binds it"
-    },
-    {
-      "type": "code",
-      "code_string": "class Person {\n    constructor(name) { this.name = name; }\n    greet() { console.log(`Hello ${this.name}`); }\n    arrowGreet = () => { console.log(`Arrow ${this.name}`); }\n}\nconst p = new Person('Frank');\np.greet(); // Works fine",
-      "annotation": "Class methods behave like object methods",
-      "highlight_lines": [
-        3,
-        4,
-        7
-      ],
-      "explanation": "Classes follow same 'this' rules as objects"
-    },
-    {
-      "type": "code",
-      "code_string": "const button = document.createElement('button');\nconst handler = {\n    message: 'Clicked!',\n    handleClick() { console.log(this.message); }\n};\nbutton.onclick = handler.handleClick; // undefined!\nbutton.onclick = handler.handleClick.bind(handler);",
-      "annotation": "Event handlers need explicit binding",
-      "highlight_lines": [
-        6,
-        7
-      ],
-      "explanation": "DOM events change 'this' to element"
-    },
-    {
-      "type": "quiz",
-      "question": "Why bind event handlers in objects?",
-      "answer": "Events set 'this' to DOM element"
-    },
-    {
-      "type": "code",
-      "code_string": "// Four rules for 'this' binding:\n// 1. new binding: new Func() -> new object\n// 2. Explicit: call/apply/bind -> specified\n// 3. Implicit: obj.method() -> obj\n// 4. Default: standalone -> window/undefined",
-      "annotation": "Four rules determine 'this' value",
-      "highlight_lines": [
-        2,
-        3,
         4,
         5
-      ],
-      "explanation": "Priority order: new > explicit > implicit > default"
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Extracting JSON data from API responses",
+      "code_string": "import requests\n\nresponse = requests.get('https://httpbin.org/json')\ndata = response.json()  # Parse JSON automatically\nprint(data['slideshow']['title'])  # Sample Slide Show",
+      "explanation": "The .json() method automatically parses JSON responses into Python dictionaries. Now you can access data like any Python dict.",
+      "highlight_lines": [
+        4,
+        5
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Checking response status codes",
+      "code_string": "import requests\n\n# Always check if request was successful\nresponse = requests.get('https://httpbin.org/status/200')\nif response.status_code == 200:\n    print(\"Success!\")  # This will print\nelse:\n    print(f\"Error: {response.status_code}\")",
+      "explanation": "Status codes tell you if requests succeeded. 200 means success, 404 means not found, 500 means server error.",
+      "highlight_lines": [
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Proper error handling with try-except",
+      "code_string": "import requests\n\n# Handle errors gracefully\ntry:\n    response = requests.get('https://httpbin.org/status/404')\n    response.raise_for_status()  # Raises exception for bad status\nexcept requests.exceptions.RequestException as e:\n    print(f\"Request failed: {e}\")",
+      "explanation": "Always wrap API calls in try-except blocks. raise_for_status() throws exceptions for HTTP errors, making error handling easier.",
+      "highlight_lines": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Adding query parameters to GET requests",
+      "code_string": "import requests\n\n# Sending parameters in GET requests\nparams = {'q': 'python', 'limit': 5}\nresponse = requests.get('https://httpbin.org/get', params=params)\nprint(response.url)  # Shows the full URL with parameters",
+      "explanation": "The params argument automatically formats query parameters. Much cleaner than manually building URL strings with parameters.",
+      "highlight_lines": [
+        4,
+        5
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Sending JSON data with POST requests",
+      "code_string": "import requests\n\n# POST request with JSON data\ndata = {'name': 'Alice', 'age': 30}\nresponse = requests.post('https://httpbin.org/post', json=data)\nprint(response.json()['json'])  # {'name': 'Alice', 'age': 30}",
+      "explanation": "POST requests send data to servers. The json parameter automatically converts Python dicts to JSON and sets proper headers.",
+      "highlight_lines": [
+        4,
+        5
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Setting custom headers for API authentication",
+      "code_string": "import requests\n\n# Adding custom headers\nheaders = {'User-Agent': 'MyApp/1.0', 'Accept': 'application/json'}\nresponse = requests.get('https://httpbin.org/headers', headers=headers)\nprint(response.json()['headers']['User-Agent'])  # MyApp/1.0",
+      "explanation": "Many APIs require specific headers for authentication or to specify data formats. Headers are key-value pairs sent with requests.",
+      "highlight_lines": [
+        4,
+        5
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Using timeouts to avoid hanging requests",
+      "code_string": "import requests\nimport time\n\n# Adding timeouts to prevent hanging\ntry:\n    response = requests.get('https://httpbin.org/delay/2', timeout=5)\n    print(\"Request completed successfully\")\nexcept requests.exceptions.Timeout:\n    print(\"Request timed out!\")",
+      "explanation": "Always set timeouts to prevent your program from hanging indefinitely. This is crucial for reliable applications.",
+      "highlight_lines": [
+        6,
+        8,
+        9
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Handling API authentication",
+      "code_string": "import requests\nfrom requests.auth import HTTPBasicAuth\n\n# API authentication example\nauth = HTTPBasicAuth('username', 'password')\nresponse = requests.get('https://httpbin.org/basic-auth/username/password', auth=auth)\nprint(response.status_code)  # 200 if authenticated",
+      "explanation": "Many APIs require authentication. Requests provides built-in support for various auth methods like Basic Auth, API keys, and tokens.",
+      "highlight_lines": [
+        5,
+        6
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Using sessions for efficient multiple requests",
+      "code_string": "import requests\n\n# Using sessions for multiple requests\nwith requests.Session() as session:\n    session.headers.update({'Authorization': 'Bearer token123'})\n    response1 = session.get('https://httpbin.org/get')\n    response2 = session.get('https://httpbin.org/user-agent')\n    # Headers persist across requests",
+      "explanation": "Sessions reuse connections and persist headers/cookies across requests. Much more efficient than individual requests.",
+      "highlight_lines": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Complete function with error handling",
+      "code_string": "import requests\n\n# Real-world example: Weather API\ndef get_weather(city):\n    url = f'https://httpbin.org/json'  # Mock weather API\n    try:\n        response = requests.get(url, timeout=10)\n        response.raise_for_status()\n        return response.json()\n    except requests.exceptions.RequestException:\n        return None",
+      "explanation": "Real-world API functions should handle timeouts, errors, and return meaningful data. This pattern works for most APIs.",
+      "highlight_lines": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "type": "code",
+      "annotation": "Understanding different response formats",
+      "code_string": "import requests\nimport json\n\n# Working with different response formats\nresponse = requests.get('https://httpbin.org/json')\n\n# Multiple ways to access response data\nprint(response.text)      # Raw string\nprint(response.json())    # Parsed JSON\nprint(response.content)   # Raw bytes",
+      "explanation": "Responses come in different formats. Use .json() for JSON APIs, .text for HTML/text, and .content for binary data like images.",
+      "highlight_lines": [
+        8,
+        9,
+        10
+      ]
     }
   ]
 }
